@@ -72,13 +72,18 @@ export function Header() {
     <>
       <div className="border-b border-muted bg-background/80 backdrop-blur-sm sticky top-0 z-50 flex items-center justify-center w-full p-3">
         <div className="max-w-6xl w-full flex items-center justify-between">
-          <Link href="/" className="hover:opacity-80 flex items-center gap-2 group">
-            <Skull className="w-8 h-8 text-accent group-hover:animate-bounce" />
-            <h1 className="text-2xl font-bold tracking-widest uppercase">Ouija</h1>
+          <Link href="/" className="hover:opacity-80 flex items-center gap-3 group">
+            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-accent/20 border border-accent/30 group-hover:bg-accent/30 transition-colors">
+              <Skull className="w-6 h-6 text-accent group-hover:animate-pulse" />
+              <div className="absolute inset-0 bg-accent/20 blur-md rounded-xl -z-10 group-hover:bg-accent/40 transition-colors" />
+            </div>
+            <h1 className="text-2xl font-black tracking-widest text-white drop-shadow-md">
+              OUIJA
+            </h1>
           </Link>
 
           <div className="flex items-center space-x-6">
-            <Link href="/graveyard" className="hidden sm:block text-gray hover:text-white transition-colors">
+            <Link href="/graveyard" className="hidden sm:inline-flex items-center justify-center h-10 px-6 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-white font-medium transition-all text-sm">
               Graveyard
             </Link>
             {ready && authenticated ? (
