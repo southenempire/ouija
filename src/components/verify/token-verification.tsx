@@ -100,6 +100,7 @@ export function TokenVerification({ onSelect }: Props) {
                         >
                             <div className="flex items-center gap-3 overflow-hidden">
                                 {token.image ? (
+                                    /* eslint-disable-next-line @next/next/no-img-element */
                                     <img src={token.image} alt={token.symbol} className="w-8 h-8 rounded-full" />
                                 ) : (
                                     <div className="w-8 h-8 rounded-full bg-muted-light flex items-center justify-center text-xs font-bold border border-muted">

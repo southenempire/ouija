@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "packageManager": "pnpm@9.15.4",
   "dependencies": {
     "@dialectlabs/react-sdk-blockchain-solana": "^2.1.1",
     "@dialectlabs/react-ui": "^2.2.0",
