@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowRight, Skull, Ghost, Flame, TrendingDown } from 'lucide-react'
+import { Skull, Ghost, Flame, TrendingDown } from 'lucide-react'
 import Link from 'next/link'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
