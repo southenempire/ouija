@@ -8,7 +8,7 @@ export default function ConfessPage() {
                     Unburden Your Bag
                 </h1>
                 <p className="text-gray">
-                    Tell us about the token that died, the money you lost, and the lesson you (probably didn't) learn.
+                    Tell us about the token that died, the money you lost, and the lesson you (probably didn&apos;t) learn.
                 </p>
             </div>
 

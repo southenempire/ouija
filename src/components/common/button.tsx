@@ -3,7 +3,7 @@
 import { cn } from '@/utils/utils'
 import { ReactNode } from 'react'
 
-type IVariant = 'default' | 'secondary' | 'ghost'
+type IVariant = 'default' | 'secondary' | 'ghost' | 'outline'
 
 interface Props {
   children: ReactNode
@@ -20,6 +20,8 @@ function getButtonStyles(variant?: IVariant) {
       return 'h-10 px-2 bg-accent text-foreground hover:opacity-80 rounded-sm'
     case 'ghost':
       return 'text-foreground'
+    case 'outline':
+      return 'h-10 px-4 border border-current bg-transparent hover:opacity-80 rounded-sm'
     case 'default':
     default:
       return 'h-10 px-2 bg-foreground text-background hover:opacity-80 rounded-sm'

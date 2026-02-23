@@ -9,8 +9,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Solana Starter Kit',
-  description: 'Take your Solana App idea from 0 to 1',
+  title: 'Ouija | Onchain Confessional',
+  description: 'Confess your dead crypto trades and let the community press F.',
 }
 
 export default function RootLayout({

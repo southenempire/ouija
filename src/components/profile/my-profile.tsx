@@ -4,6 +4,7 @@ import { Card } from '@/components/common/card'
 import { CopyPaste } from '@/components/common/copy-paste'
 import { Bio } from '@/components/profile/bio'
 import { useGetProfileInfo } from '@/components/profile/hooks/use-get-profile-info'
+import { UserConfessions } from './user-confessions/user-confessions'
 import { User } from 'lucide-react'
 import Image from 'next/image'
 
@@ -47,6 +48,9 @@ export function MyProfile({ username }: Props) {
             {data?.socialCounts.following} following
           </p>
           <Bio username={username} data={data} refetch={refetch} />
+          {data?.profile?.id && (
+            <UserConfessions profileId={data.profile.id} />
+          )}
         </div>
       </div>
     </Card>
