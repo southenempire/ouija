@@ -1,9 +1,9 @@
 export const metadata = {
-  name: 'tapestry-template',
-  title: 'Tapestry protocol template',
-  description: 'Create your first Tapestry protocol app',
-  url: 'https://tapestry-template.vercel.app/',
-  iconUrls: ['https://tapestry-template.vercel.app/favicon.ico'],
+  name: 'Ouija',
+  title: 'Ouija | The Tapestry Onchain Confessional',
+  description: 'Confess your dead crypto bags onchain.',
+  url: 'https://ouija.xyz',
+  iconUrls: ['https://ouija.xyz/logo.png'],
   additionalInfo: '',
   walletConnectProjectId: '',
 }

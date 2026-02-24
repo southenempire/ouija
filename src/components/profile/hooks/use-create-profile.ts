@@ -20,10 +20,10 @@ export const useCreateProfile = () => {
       const formData = new FormData()
       formData.append('username', username)
       formData.append('ownerWalletAddress', walletAddress)
-      if(bio) {
+      if (bio) {
         formData.append('bio', bio)
       }
-      if(image) {
+      if (image) {
         formData.append('image', image)
       }
 
@@ -39,8 +39,10 @@ export const useCreateProfile = () => {
 
       const data = await res.json()
       setResponse(data)
+      return data
     } catch (err: any) {
       setError(err.message)
+      return null
     } finally {
       setLoading(false)
     }

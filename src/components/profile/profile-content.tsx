@@ -16,10 +16,17 @@ export async function ProfileContent({ username }: Props) {
   })
 
   return (
-    <div className="space-y-4">
-      <MyProfile username={username} />
-      <div className="flex w-full justify-between space-x-4">
-        <FollowList followers={followers} following={following} />
+    <div className="w-full max-w-6xl mx-auto md:px-6">
+      <div className="flex flex-col md:flex-row gap-6">
+        {/* Left Column: Profile details and Confessions */}
+        <div className="w-full md:w-2/3 space-y-6">
+          <MyProfile username={username} />
+        </div>
+
+        {/* Right Column: Follow List */}
+        <div className="w-full md:w-1/3 space-y-6">
+          <FollowList followers={followers} following={following} />
+        </div>
       </div>
     </div>
   )

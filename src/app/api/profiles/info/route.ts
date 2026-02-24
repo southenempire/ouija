@@ -17,6 +17,9 @@ export async function GET(req: Request) {
 
     return NextResponse.json(response)
   } catch (error: any) {
+    if (error?.message?.includes('404') || error?.response?.status === 404) {
+      return NextResponse.json({ profile: null, socialCounts: { followers: 0, following: 0 } })
+    }
     console.error('Error fetching profiles:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to fetch profiles' },

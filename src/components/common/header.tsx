@@ -8,8 +8,8 @@ import {
   Clipboard,
   LogOut,
   User,
-  Skull
 } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
@@ -19,10 +19,24 @@ import { CreateProfileContainer } from '../create-profile/create-profile-contain
 
 export function Header() {
   const { walletAddress } = useCurrentWallet()
-  const [mainUsername, setMainUsername] = useState<string | null>(null)
+  const [mainUsername, setMainUsername] = useState<string | null>(() => {
+    if (typeof window !== 'undefined') {
+      const cached = localStorage.getItem(`tapestry_profile_${walletAddress}`)
+      if (cached) {
+        try {
+          return JSON.parse(cached).username
+        } catch {
+          return null
+        }
+      }
+    }
+    return null
+  })
+
+  // Check login states
   const [isProfileCreated, setIsProfileCreated] = useState<boolean>(false)
   const [profileUsername, setProfileUsername] = useState<string | null>(null)
-  const { profiles } = useGetProfiles({
+  const { profiles, loading: profilesLoading } = useGetProfiles({
     walletAddress: walletAddress || '',
   })
   const { ready, authenticated, logout } = usePrivy()
@@ -57,7 +71,7 @@ export function Header() {
   }, [])
 
   useEffect(() => {
-    if (profiles && profiles.length) {
+    if (profiles && profiles.length > 0) {
       setMainUsername(profiles[0].profile.username)
     }
 
@@ -73,8 +87,14 @@ export function Header() {
       <div className="border-b border-muted bg-background/80 backdrop-blur-sm sticky top-0 z-50 flex items-center justify-center w-full p-3">
         <div className="max-w-6xl w-full flex items-center justify-between">
           <Link href="/" className="hover:opacity-80 flex items-center gap-3 group">
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-accent/20 border border-accent/30 group-hover:bg-accent/30 transition-colors">
-              <Skull className="w-6 h-6 text-accent group-hover:animate-pulse" />
+            <div className="relative flex items-center justify-center w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 group-hover:bg-accent/20 transition-colors overflow-hidden">
+              <Image
+                src="/logo.png"
+                alt="Ouija Logo"
+                width={48}
+                height={48}
+                className="object-cover group-hover:scale-110 transition-transform duration-300"
+              />
               <div className="absolute inset-0 bg-accent/20 blur-md rounded-xl -z-10 group-hover:bg-accent/40 transition-colors" />
             </div>
             <h1 className="text-2xl font-black tracking-widest text-white drop-shadow-md">
@@ -141,10 +161,15 @@ export function Header() {
                     )}
                   </div>
                 </div>
+              ) : profilesLoading ? (
+                <div className="flex items-center justify-center h-10 px-6 rounded-full bg-muted/50 border border-muted-light animate-pulse">
+                  <div className="w-20 h-4 bg-muted rounded"></div>
+                </div>
               ) : (
                 <CreateProfileContainer
                   setIsProfileCreated={setIsProfileCreated}
                   setProfileUsername={setProfileUsername}
+                  profilesLoading={profilesLoading}
                 />
               )
             ) : (

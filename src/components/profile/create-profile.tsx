@@ -46,10 +46,20 @@ export function CreateProfile({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (walletAddress && username) {
-      await createProfile({ username, walletAddress })
+      const res = await createProfile({ username, walletAddress })
+
+      // Stop here if the API failed (e.g. 400 error, username taken)
+      if (!res || res.error) {
+        return
+      }
+
+      if (res.profile) {
+        localStorage.setItem(`tapestry_profile_${walletAddress}`, JSON.stringify(res.profile))
+      }
       setIsProfileCreated(true)
       setProfileUsername(username)
       setCreateProfileDialog(false)
+      window.dispatchEvent(new Event('profile-updated'))
     }
   }
 
@@ -65,14 +75,19 @@ export function CreateProfile({
       return
     }
 
-    await createProfile({
+    const res = await createProfile({
       username: elem.profile.username,
       walletAddress: walletAddress,
       bio: elem.profile.bio,
       image: elem.profile.image,
     })
 
+    if (res && res.profile) {
+      localStorage.setItem(`tapestry_profile_${walletAddress}`, JSON.stringify(res.profile))
+    }
+
     setCreateProfileDialog(false)
+    window.dispatchEvent(new Event('profile-updated'))
     window.location.reload()
   }
 
@@ -112,82 +127,82 @@ export function CreateProfile({
             {!!identities?.identities?.length ? (
               <div className="w-full h-[200px] overflow-auto">
                 {
-                identities?.identities?.map((profiles) => (
-                profiles?.profiles?.map((entry, index) => (
-                  <Button
-                    key={index}
-                    disabled={profilesLoading}
-                    variant="ghost"
-                    onClick={() => setSelectProfile(entry)}
-                    className="flex items-start justify-start w-full"
-                  >
-                    <div
-                      className={cn(
-                        'flex items-center border-2 rounded-sm w-full p-2 space-y-2',
-                        {
-                          'border border-accent': selectProfile === entry,
-                          'border border-mutedLight': selectProfile !== entry,
-                        },
-                      )}
-                    >
-                      <div className="flex items-center space-x-2">
-                        <div className="relative rounded-full w-11 h-11 bg-muted-foreground shrink-0 flex items-center justify-center">
-                          {entry.profile.image ? (
-                            <div>
-                              <Image
-                                width={30}
-                                height={30}
-                                alt="avatar"
-                                className="rounded-full object-cover"
-                                src={entry.profile.image}
-                                unoptimized
-                              />
+                  identities?.identities?.map((profiles) => (
+                    profiles?.profiles?.map((entry, index) => (
+                      <Button
+                        key={index}
+                        disabled={profilesLoading}
+                        variant="ghost"
+                        onClick={() => setSelectProfile(entry)}
+                        className="flex items-start justify-start w-full"
+                      >
+                        <div
+                          className={cn(
+                            'flex items-center border-2 rounded-sm w-full p-2 space-y-2',
+                            {
+                              'border border-accent': selectProfile === entry,
+                              'border border-mutedLight': selectProfile !== entry,
+                            },
+                          )}
+                        >
+                          <div className="flex items-center space-x-2">
+                            <div className="relative rounded-full w-11 h-11 bg-muted-foreground shrink-0 flex items-center justify-center">
+                              {entry.profile.image ? (
+                                <div>
+                                  <Image
+                                    width={30}
+                                    height={30}
+                                    alt="avatar"
+                                    className="rounded-full object-cover"
+                                    src={entry.profile.image}
+                                    unoptimized
+                                  />
+                                </div>
+                              ) : (
+                                <User />
+                              )}
                             </div>
-                          ) : (
-                            <User />
-                          )}
-                        </div>
-                        <div className="w-2/3 flex flex-col items-start text-left">
-                          <h4 className="text-md font-bold truncate w-full">
-                            {entry.profile?.username ?? 'No username'}
-                          </h4>
-                          {entry.profile?.bio && (
-                            <p className="text-xs text-muted-foreground truncate w-full">
-                              {entry.profile?.bio}
-                            </p>
-                          )}
-                          {entry?.namespace?.faviconURL && (
-                            <div className="mt-2 w-full">
-                              <Image
-                                width={15}
-                                height={15}
-                                alt="favicon"
-                                className="rounded-full object-cover"
-                                src={entry.namespace.faviconURL}
-                                unoptimized
-                              />
+                            <div className="w-2/3 flex flex-col items-start text-left">
+                              <h4 className="text-md font-bold truncate w-full">
+                                {entry.profile?.username ?? 'No username'}
+                              </h4>
+                              {entry.profile?.bio && (
+                                <p className="text-xs text-muted-foreground truncate w-full">
+                                  {entry.profile?.bio}
+                                </p>
+                              )}
+                              {entry?.namespace?.faviconURL && (
+                                <div className="mt-2 w-full">
+                                  <Image
+                                    width={15}
+                                    height={15}
+                                    alt="favicon"
+                                    className="rounded-full object-cover"
+                                    src={entry.namespace.faviconURL}
+                                    unoptimized
+                                  />
+                                </div>
+                              )}
                             </div>
-                          )}
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </Button>
-                ))
-              ))}
+                      </Button>
+                    ))
+                  ))}
               </div>
             ) : (
               <p className="text-xs text-center">
-                 {profilesLoading &&( <>
+                {profilesLoading && (<>
                   Getting profiles from Tapestry.. Please wait
-                <br />
+                  <br />
                 </>
-              )}
+                )}
 
-                {!profilesLoading &&( <>
+                {!profilesLoading && (<>
                   We could not find any profiles on Tapestry.
-                <br /> Create one to get started!
+                  <br /> Create one to get started!
                 </>
-              )}
+                )}
               </p>
             )}
           </div>
@@ -202,7 +217,7 @@ export function CreateProfile({
               }
             }}
           >
-          {creationLoading ? 'Importing...' : 'Import profile'}
+            {creationLoading ? 'Importing...' : 'Import profile'}
           </Button>
           <Button
             className="w-full text-xs underline justify-center"

@@ -1,16 +1,12 @@
 import { NextResponse } from 'next/server'
+import { getConfessionsData } from '../confessions/route'
 
 export async function GET() {
     try {
-        // Reusing the global confessions logic to derive the leaderboard
-        const response = await fetch(new URL('/api/confessions', process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'), {
-            next: { revalidate: 60 } // Cache for 1 min
-        })
-
-        if (!response.ok) throw new Error('Failed to fetch confessions')
-
-        const data = await response.json()
-        const allConfessions = data.confessions || []
+        // Fetch confessions directly using the exported data logic
+        // This avoids making a local fetch to /api/confessions which
+        // notoriously causes Next.js ECONNRESET timeouts locally.
+        const allConfessions = await getConfessionsData()
 
         // 1. Hall of Pain (Most F's)
         const topLiked = [...allConfessions]

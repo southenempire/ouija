@@ -9,8 +9,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Ouija | Onchain Confessional',
-  description: 'Confess your dead crypto trades and let the community press F.',
+  title: 'Ouija | The Tapestry Onchain Confessional',
+  description: 'Confess your dead crypto bags onchain. Built natively on the Tapestry Social Protocol. Where digital ghosts finally find peace, and readers press F to pay respects.',
 }
 
 export default function RootLayout({
@@ -20,11 +20,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} bg-background text-foreground min-h-screen selection:bg-accent/30 selection:text-white antialiased`}>
         <PrivyClientProvider>
           <Header />
           <Toaster />
-          <div className="max-w-6xl mx-auto pt-12 pb-22">{children}</div>
+          <main className="max-w-6xl mx-auto pt-12 pb-22 relative overflow-hidden">
+            {children}
+          </main>
         </PrivyClientProvider>
       </body>
     </html>

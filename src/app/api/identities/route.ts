@@ -13,9 +13,12 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(response)
   } catch (error: any) {
-    console.error('Error fetching profiles:', error)
+    if (error?.message?.includes('404') || error?.response?.status === 404) {
+      return NextResponse.json(null)
+    }
+    console.error('Error fetching identity:', error)
     return NextResponse.json(
-      { error: error.message || 'Failed to fetch profiles' },
+      { error: error.message || 'Failed to fetch identity' },
       { status: 500 },
     )
   }

@@ -8,10 +8,13 @@ import { useEffect, useState } from 'react'
 interface CreateProfileContainerProps {
   setIsProfileCreated: (val: boolean) => void
   setProfileUsername: (val: string) => void
+  profilesLoading: boolean
 }
+
 export function CreateProfileContainer({
   setIsProfileCreated,
   setProfileUsername,
+  profilesLoading,
 }: CreateProfileContainerProps) {
   const [createProfileDialog, setCreateProfileDialog] = useState(false)
 
@@ -19,14 +22,22 @@ export function CreateProfileContainer({
     useCurrentWallet()
 
   useEffect(() => {
-    if (walletAddress && !mainUsername && !loadingMainUsername) {
-      setCreateProfileDialog(true)
+    // Before we forcefully pop open the dialog, ensure that:
+    // 1. The wallet is connected
+    // 2. We don't have a mainUsername
+    // 3. We are done checking Tapestry
+    // 4. We double check local storage to ensure the profile isn't just taking a second to propagate
+    if (walletAddress && !mainUsername && !loadingMainUsername && !profilesLoading) {
+      const cached = localStorage.getItem(`tapestry_profile_${walletAddress}`)
+      if (!cached) {
+        setCreateProfileDialog(true)
+      }
     }
-  }, [walletAddress, mainUsername, loadingMainUsername])
+  }, [walletAddress, mainUsername, loadingMainUsername, profilesLoading])
 
   return (
     <Dialog isOpen={createProfileDialog} setIsOpen={setCreateProfileDialog}>
-      <CreateProfile setCreateProfileDialog={setCreateProfileDialog} setIsProfileCreated={setIsProfileCreated} setProfileUsername={setProfileUsername}/>
+      <CreateProfile setCreateProfileDialog={setCreateProfileDialog} setIsProfileCreated={setIsProfileCreated} setProfileUsername={setProfileUsername} />
     </Dialog>
   )
 }

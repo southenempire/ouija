@@ -1,6 +1,7 @@
 'use client'
 
 import { Skull, Ghost, Flame, TrendingDown } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
@@ -16,7 +17,7 @@ export default function Home() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
 
   return (
-    <div ref={containerRef} className="flex flex-col items-center justify-center min-h-[85vh] text-center px-4 overflow-hidden relative">
+    <div ref={containerRef} className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] py-12 text-center px-4 overflow-hidden relative">
       <motion.div style={{ y, opacity }} className="absolute top-1/4 -left-20 w-64 h-64 bg-accent/20 rounded-full blur-[100px] -z-10" />
       <motion.div style={{ y, opacity }} className="absolute bottom-1/4 -right-20 w-64 h-64 bg-error/10 rounded-full blur-[100px] -z-10" />
 
@@ -27,10 +28,22 @@ export default function Home() {
         transition={{ duration: 1.2, type: "spring", bounce: 0.5 }}
       >
         <motion.div
-          animate={{ y: [0, -15, 0] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          animate={{ y: [-15, -15, 0, 0, -15] }}
+          transition={{ duration: 1.4, repeat: Infinity, times: [0, 0.49, 0.5, 0.99, 1] }}
         >
-          <Ghost className="w-28 h-28 text-success/90 drop-shadow-[0_0_15px_rgba(34,197,94,0.5)]" />
+          <div
+            className="relative w-40 h-40 drop-shadow-[0_0_25px_rgba(168,85,247,0.4)] mix-blend-screen xl:w-48 xl:h-48"
+            style={{ maskImage: 'radial-gradient(circle closest-side, black 80%, transparent 100%)', WebkitMaskImage: 'radial-gradient(circle closest-side, black 85%, transparent 100%)' }}
+          >
+            <Image
+              src="/pixel-ghost.png"
+              alt="Floating Pixel Art Ghost"
+              fill
+              sizes="(max-width: 768px) 160px, 192px"
+              className="object-contain filter contrast-125 brightness-110"
+              priority
+            />
+          </div>
         </motion.div>
 
         <motion.div
@@ -46,7 +59,7 @@ export default function Home() {
       </motion.div>
 
       <motion.h1
-        className="text-6xl md:text-8xl font-black tracking-tighter mb-6 bg-gradient-to-br from-white via-zinc-200 to-zinc-600 bg-clip-text text-transparent pb-2"
+        className="text-5xl md:text-7xl font-black tracking-tighter mb-4 bg-gradient-to-br from-white via-zinc-200 to-zinc-600 bg-clip-text text-transparent pb-1"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
@@ -55,7 +68,7 @@ export default function Home() {
       </motion.h1>
 
       <motion.p
-        className="text-xl md:text-2xl text-zinc-400 font-medium max-w-2xl mb-12 leading-relaxed"
+        className="text-lg md:text-xl text-zinc-400 font-medium max-w-2xl mb-8 leading-relaxed"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
@@ -86,7 +99,7 @@ export default function Home() {
       </motion.div>
 
       <motion.div
-        className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-28 w-full max-w-5xl"
+        className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 w-full max-w-5xl"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.8 }}

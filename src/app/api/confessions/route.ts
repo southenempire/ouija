@@ -1,53 +1,58 @@
 import { socialfi } from '@/utils/socialfi'
 import { NextResponse } from 'next/server'
 
-export async function GET() {
+export async function getConfessionsData() {
+    // 1. Fetch all profiles in our namespace
+    let profilesResponse: any = null
     try {
-        // 1. Fetch all profiles in our namespace
-        const profilesResponse = await socialfi.profiles.profilesList({
+        profilesResponse = await socialfi.profiles.profilesList({
             apiKey: process.env.TAPESTRY_API_KEY || '',
         })
-
-        if (!profilesResponse || !profilesResponse.profiles) {
-            return NextResponse.json({ confessions: [] })
+    } catch (error: any) {
+        // Tapestry API throws a 404 if no profiles exist in the namespace
+        if (error?.message?.includes('404') || error?.response?.status === 404) {
+            return []
         }
+        throw error // Rethrow unexpected errors
+    }
 
-        const allProfiles = profilesResponse.profiles
+    if (!profilesResponse || !profilesResponse.profiles) {
+        return []
+    }
 
-        // 2. For each profile, fetch their comments (confessions)
-        // In a production app, we'd use a more robust Tapestry indexing/search API,
-        // but for the hackathon MVP, we can aggregate comments from profiles.
-        const confessionsPromises = allProfiles.map(async (profile: any) => {
-            try {
-                const commentsResponse = await socialfi.comments.commentsList({
-                    apiKey: process.env.TAPESTRY_API_KEY || '',
-                    targetProfileId: profile.id,
-                })
+    const allProfiles = profilesResponse.profiles
 
-                // Return comments attached with profile info
-                return (commentsResponse?.comments || []).map((comment: any) => ({
-                    ...comment,
-                    author: profile
-                }))
-            } catch {
-                console.error(`Failed to fetch comments for profile ${profile.id}`)
+    // 2. For each profile, fetch their comments (confessions)
+    const confessionsPromises = allProfiles.map(async (profile: any) => {
+        try {
+            const commentsResponse = await socialfi.comments.commentsList({
+                apiKey: process.env.TAPESTRY_API_KEY || '',
+                targetProfileId: profile.id,
+            })
+
+            // Return comments attached with profile info
+            return (commentsResponse?.comments || []).map((comment: any) => ({
+                ...comment,
+                author: profile
+            }))
+        } catch (error: any) {
+            if (error?.message?.includes('404') || error?.response?.status === 404) {
                 return []
             }
-        })
+            console.error(`Failed to fetch comments for profile ${profile.id}:`, error)
+            return []
+        }
+    })
 
-        const allConfessionsArrays = await Promise.all(confessionsPromises)
+    const nestedConfessions = await Promise.all(confessionsPromises)
+    const flatConfessions = nestedConfessions.flat()
 
-        // 3. Flatten, sort by newest, and format
-        const allConfessions = allConfessionsArrays
-            .flat()
-            .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-
-        // Parse out the structured content [MOOD] | Lost [AMOUNT] on [TOKEN] | [STORY]
-        const formattedConfessions = allConfessions.map(c => {
-            // Default fallback if it doesn't match our strict format
-            const formatted = {
+    // 3. Process and format the raw comments
+    const formatted = flatConfessions
+        .filter(c => c.text?.includes(' | '))
+        .map(c => {
+            const parsed = {
                 id: c.id,
-                author: c.author,
                 text: c.text,
                 mood: '🪦',
                 lossAmount: 'Unknown',
@@ -55,39 +60,43 @@ export async function GET() {
                 story: c.text,
                 likes: c.likes_count || 0,
                 createdAt: c.created_at,
-                txHash: c.tx_hash
+                txHash: c.tx_hash,
+                authorUsername: c.author.username,
+                authorId: c.author.id,
+                authorAddress: c.author.wallet_address || c.author.username, // Using username as fallback
+                authorAvatar: c.author.image || null
             }
 
             try {
-                // Try to parse our specific format
                 const parts = c.text.split(' | ')
                 if (parts.length >= 3) {
                     const mood = parts[0].trim()
-
-                    // 'Lost $50k on BTC' -> extract amount and token
                     const lossStr = parts[1].trim()
                     const lossMatch = lossStr.match(/Lost\s+(.+?)\s+on\s+(.+)/i)
 
                     if (lossMatch) {
-                        formatted.mood = mood
-                        formatted.lossAmount = lossMatch[1]
-                        formatted.token = lossMatch[2]
-                        formatted.story = parts.slice(2).join(' | ').trim()
+                        parsed.mood = mood
+                        parsed.lossAmount = lossMatch[1]
+                        parsed.token = lossMatch[2]
+                        parsed.story = parts.slice(2).join(' | ').trim()
                     }
                 }
             } catch {
-                // Ignore parsing errors and use fallback
+                // Ignore parsing errors
             }
-
-            return formatted
+            return parsed
         })
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
-        return NextResponse.json({ confessions: formattedConfessions })
+    return formatted
+}
+
+export async function GET() {
+    try {
+        const confessions = await getConfessionsData()
+        return NextResponse.json({ confessions })
     } catch (error: any) {
-        console.error('[Get All Confessions Error]:', error)
-        return NextResponse.json(
-            { error: error.message || 'Failed to fetch confessions' },
-            { status: 500 },
-        )
+        console.error('Failed to get confessions in route:', error)
+        return NextResponse.json({ error: 'Failed to fetch confessions', confessions: [] }, { status: 500 })
     }
 }
