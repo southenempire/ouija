@@ -61,7 +61,7 @@ export default function Home() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
 
   return (
-    <div ref={containerRef} className="flex flex-col items-center min-h-[calc(100vh-80px)] overflow-hidden relative bg-zinc-950">
+    <div ref={containerRef} className="flex flex-col items-center min-h-[calc(100vh-80px)] overflow-hidden relative bg-zinc-950 w-full max-w-[100vw]">
       {/* Fog Layers */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none mix-blend-screen opacity-60">
         <motion.div

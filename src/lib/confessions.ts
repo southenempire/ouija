@@ -44,7 +44,11 @@ export async function getConfessionsData() {
     })
 
     const nestedConfessions = await Promise.all(confessionsPromises)
-    const flatConfessions = nestedConfessions.flat()
+    const flatConfessions = nestedConfessions.flat(1)
+
+    if (flatConfessions.length === 0) {
+        console.warn("No confessions found across all profiles.")
+    }
 
     // 3. Process and format the raw comments
     const formatted = flatConfessions
