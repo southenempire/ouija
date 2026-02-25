@@ -161,7 +161,7 @@ export function UserConfessions({ profileId }: Props) {
                                     <Button
                                         variant="ghost"
                                         onClick={() => {
-                                            const text = `I just found this brutal crypto confession in the Solana Graveyard 🪦\n\n${confession.author?.username || 'Some poor soul'} lost ${confession.lossAmount} on ${confession.token} 😭\n\nPress F to pay respects: https://ouija-omega.vercel.app/graveyard\n\n@usetapestry @ouijadotfun #SolanaGraveyardHackathon`
+                                            const text = `I just found this brutal crypto confession in the Solana Graveyard 🪦\n\n${confession.authorUsername || 'Some poor soul'} lost ${confession.lossAmount} on ${confession.token} 😭\n\nPress F to pay respects: https://ouija-omega.vercel.app/graveyard\n\n@usetapestry @ouijadotfun #SolanaGraveyardHackathon`
                                             window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank')
                                         }}
                                         className="text-gray hover:text-[#1DA1F2] hover:bg-[#1DA1F2]/10 gap-2 h-8 px-2 transition-colors"

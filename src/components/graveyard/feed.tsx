@@ -116,10 +116,10 @@ export function Feed() {
                                             </div>
                                             <div className="text-sm text-zinc-500 flex items-center gap-1.5 mt-0.5">
                                                 <span className="w-4 h-4 rounded-full bg-accent/20 flex items-center justify-center text-[8px]">👤</span>
-                                                <Link href={`/${confession.author?.username || ''}`} className="hover:underline hover:text-accent transition-colors">
-                                                    {confession.author?.username || 'Unknown'}
+                                                <Link href={`/${confession.authorUsername || ''}`} className="hover:underline hover:text-accent transition-colors">
+                                                    {confession.authorUsername || 'Unknown'}
                                                 </Link>
-                                                <span className="opacity-50">•</span> {abbreviateWalletAddress({ address: confession.author?.wallet_address || '0x00...0000' })}
+                                                <span className="opacity-50">•</span> {abbreviateWalletAddress({ address: confession.authorAddress || '0x00...0000' })}
                                             </div>
                                         </div>
                                     </div>
@@ -159,7 +159,7 @@ export function Feed() {
                                         <Button
                                             variant="ghost"
                                             onClick={() => {
-                                                const text = `I just found this brutal crypto confession in the Solana Graveyard 🪦\n\n${confession.author?.username || 'Some poor soul'} lost ${confession.lossAmount} on ${confession.token} 😭\n\nPress F to pay respects: https://ouija-omega.vercel.app/graveyard\n\n@usetapestry @ouijadotfun #SolanaGraveyardHackathon`
+                                                const text = `I just found this brutal crypto confession in the Solana Graveyard 🪦\n\n${confession.authorUsername || 'Some poor soul'} lost ${confession.lossAmount} on ${confession.token} 😭\n\nPress F to pay respects: https://ouija-omega.vercel.app/graveyard\n\n@usetapestry @ouijadotfun #SolanaGraveyardHackathon`
                                                 window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank')
                                             }}
                                             className="text-zinc-500 hover:text-[#1DA1F2] hover:bg-[#1DA1F2]/10 gap-2 transition-colors"
