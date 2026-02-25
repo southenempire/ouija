@@ -5,6 +5,8 @@ import { CopyPaste } from '@/components/common/copy-paste'
 import { useGetProfileInfo } from '@/components/profile/hooks/use-get-profile-info'
 import { UserConfessions } from './user-confessions/user-confessions'
 import { EditProfileModal } from './edit-profile-modal'
+import { FollowButton } from '@/components/profile/follow-button'
+import { useCurrentWallet } from '@/components/auth/hooks/use-current-wallet'
 import { User, Users, Link as LinkIcon, Quote } from 'lucide-react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
@@ -14,6 +16,7 @@ interface Props {
 }
 
 export function MyProfile({ username }: Props) {
+  const { mainUsername } = useCurrentWallet()
   const { data, refetch } = useGetProfileInfo({ username })
 
   return (
@@ -46,8 +49,9 @@ export function MyProfile({ username }: Props) {
               )}
             </div>
 
-            {/* Actions / Edit Profile Button Area */}
-            <div className="mb-2">
+            {/* Actions / Edit/Follow Button Area */}
+            <div className="mb-2 flex items-center gap-2 relative z-20">
+              {mainUsername !== username && <FollowButton username={username} />}
               <EditProfileModal username={username} data={data as any} refetch={refetch} />
             </div>
           </div>
