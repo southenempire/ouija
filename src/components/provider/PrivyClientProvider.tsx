@@ -14,7 +14,7 @@ export function PrivyClientProvider({
       config={{
         appearance: {
           walletChainType: 'solana-only',
-          walletList: ['phantom', 'solflare', 'backpack'],
+          walletList: ['phantom', 'solflare', 'backpack', 'detected_solana_wallets'],
         },
         externalWallets: {
           solana: { connectors: toSolanaWalletConnectors() },
