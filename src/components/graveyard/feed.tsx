@@ -50,8 +50,8 @@ export function Feed() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    profileId: profiles[0].profile.id,
-                    commentId: confessionId,
+                    startId: profiles[0].profile.id,
+                    nodeId: confessionId,
                 })
             })
 
