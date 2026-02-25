@@ -9,12 +9,14 @@ import { abbreviateWalletAddress } from '@/components/common/tools'
 import { toast } from 'sonner'
 import { useCurrentWallet } from '@/components/auth/hooks/use-current-wallet'
 import { useGetProfiles } from '@/components/auth/hooks/use-get-profiles'
+import { useSfx } from '@/hooks/use-sfx'
 
 export function Feed() {
     const [confessions, setConfessions] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
     const { walletAddress } = useCurrentWallet()
     const { profiles } = useGetProfiles({ walletAddress: walletAddress || '' })
+    const { playPressF } = useSfx()
 
     const fetchConfessions = async () => {
         try {
@@ -52,6 +54,7 @@ export function Feed() {
 
             if (!res.ok) throw new Error('Failed to pay respects')
 
+            playPressF()
             toast.success('Respects paid. F.', { icon: '🕯️' })
 
             // Optimistic update
@@ -78,8 +81,8 @@ export function Feed() {
                 <Card className="p-16 text-center glass-card border-white/5 relative overflow-hidden group">
                     <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-transparent opacity-50" />
                     <Skull className="w-20 h-20 text-zinc-600 mx-auto mb-6 group-hover:text-accent group-hover:animate-pulse transition-colors duration-500" />
-                    <h3 className="text-3xl font-black mb-3 text-white tracking-tight">The Graveyard is Empty</h3>
-                    <p className="text-zinc-400 text-lg max-w-md mx-auto">Be the first to confess your sins onchain and let the community press F for your dead bags.</p>
+                    <h3 className="text-3xl font-black mb-3 text-white tracking-tight">No Confessions Yet</h3>
+                    <p className="text-zinc-400 text-lg max-w-md mx-auto">Be the first to post a loss and let the community press F.</p>
                 </Card>
             </motion.div>
         )
@@ -99,7 +102,7 @@ export function Feed() {
                             <div className="relative z-10">
                                 <div className="flex items-start justify-between mb-6">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 rounded-xl bg-zinc-900/80 flex items-center justify-center border border-white/10 text-2xl shadow-inner group-hover:scale-110 transition-transform duration-500">
+                                        <div className="w-12 h-12 bg-zinc-900/80 flex items-center justify-center border-4 border-muted-light text-2xl group-hover:scale-110 transition-transform duration-500 shadow-[4px_4px_0_0_#18181b]">
                                             {confession.mood}
                                         </div>
                                         <div>
@@ -138,8 +141,8 @@ export function Feed() {
                                         onClick={() => handlePressF(confession.id)}
                                         className="text-zinc-400 hover:text-success hover:bg-success/10 gap-2 flex-grow sm:flex-grow-0 group/btn transition-colors"
                                     >
-                                        <span className="font-black text-xl group-hover/btn:scale-125 transition-transform duration-300">F</span>
-                                        <span className="bg-zinc-900 border border-white/10 px-3 py-1 rounded-full text-xs font-bold shadow-inner flex items-center gap-1">
+                                        <span className="font-black text-xl group-hover/btn:scale-125 transition-transform duration-300 shadow-none font-pixel">F</span>
+                                        <span className="bg-zinc-900 border-2 border-muted-light px-3 py-1 text-xs font-bold font-pixel flex items-center gap-1">
                                             <Skull size={10} className={confession.likes > 0 ? "text-success" : "text-zinc-600"} />
                                             {confession.likes}
                                         </span>

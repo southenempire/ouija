@@ -17,14 +17,14 @@ interface Props {
 function getButtonStyles(variant?: IVariant) {
   switch (variant) {
     case 'secondary':
-      return 'h-10 px-2 bg-accent text-foreground hover:opacity-80 rounded-sm'
+      return 'h-10 px-4 bg-accent text-white border-b-4 border-r-4 border-accent-hover hover:bg-accent-hover active:translate-y-1 active:border-b-0 active:border-r-0 transition-all rounded-none font-bold uppercase tracking-widest'
     case 'ghost':
-      return 'text-foreground'
+      return 'text-foreground hover:bg-white/5 rounded-none font-bold tracking-widest'
     case 'outline':
-      return 'h-10 px-4 border border-current bg-transparent hover:opacity-80 rounded-sm'
+      return 'h-10 px-4 border-2 border-foreground bg-transparent hover:bg-white/5 active:translate-y-1 border-b-4 border-r-4 transition-all rounded-none font-bold uppercase tracking-widest'
     case 'default':
     default:
-      return 'h-10 px-2 bg-foreground text-background hover:opacity-80 rounded-sm'
+      return 'h-10 px-4 bg-white text-black border-b-4 border-r-4 border-gray-400 hover:bg-gray-200 active:translate-y-1 active:border-b-0 active:border-r-0 transition-all rounded-none font-bold uppercase tracking-widest'
   }
 }
 

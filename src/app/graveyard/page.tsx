@@ -15,7 +15,7 @@ export default function GraveyardPage() {
                     The Graveyard
                 </h1>
                 <p className="text-zinc-400 text-xl font-medium max-w-2xl mx-auto leading-relaxed">
-                    Here lies the fallen capital. May their souls rest in peace, and their bags never be mentioned again.
+                    Browse the community's trading history and press F to pay respects.
                 </p>
             </div>
 

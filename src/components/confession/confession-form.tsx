@@ -68,7 +68,7 @@ export function ConfessionForm() {
             }
 
             playConfess()
-            toast.success('Your confession has been immortalized onchain.', {
+            toast.success('Your confession has been posted.', {
                 icon: '🪦'
             })
 
@@ -114,9 +114,9 @@ export function ConfessionForm() {
         content = (
             <div className="text-center py-10 flex flex-col items-center">
                 <Skull className="w-16 h-16 text-zinc-600 mb-6 drop-shadow-md" />
-                <h3 className="text-2xl font-black text-white mb-2">Anonymous Ghosts Cannot Speak</h3>
+                <h3 className="text-2xl font-black text-white mb-2">Create a Profile</h3>
                 <p className="text-zinc-400 max-w-sm mb-6 leading-relaxed">
-                    You must create a Tapestry profile before you can immortalize your dead bags onchain.
+                    You must create a Tapestry profile to post a confession.
                 </p>
                 <div className="bg-accent/10 border border-accent/20 rounded-xl p-4 text-accent font-medium">
                     Please use the <strong>Profile</strong> button in the top right header to create your identity.
@@ -186,7 +186,7 @@ export function ConfessionForm() {
                 >
                     {isSubmitting ? (
                         <span className="flex items-center gap-2">
-                            <Skull className="animate-spin" size={20} /> Carving Tombstone...
+                            <Skull className="animate-spin" size={20} /> Submitting Confession...
                         </span>
                     ) : (
                         <span className="flex items-center gap-2">

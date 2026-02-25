@@ -64,7 +64,7 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
       >
-        Confess Your<br />Dead Trades
+        Confess Your<br />Crypto Losses
       </motion.h1>
 
       <motion.p
@@ -73,8 +73,8 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
       >
-        The definitive onchain confessional built on <span className="text-white font-bold">Tapestry</span>.
-        Bear your soul, reveal your worst losses, and let the community press F to pay respects.
+        The onchain confessional built on <span className="text-white font-bold">Tapestry</span>.
+        Share your worst trading mistakes and let the community press F.
       </motion.p>
 
       <motion.div

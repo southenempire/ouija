@@ -8,6 +8,7 @@ import { Skull } from 'lucide-react'
 import { toast } from 'sonner'
 import { useCurrentWallet } from '@/components/auth/hooks/use-current-wallet'
 import { useGetProfiles } from '@/components/auth/hooks/use-get-profiles'
+import { useSfx } from '@/hooks/use-sfx'
 
 interface Props {
     profileId: string
@@ -18,6 +19,7 @@ export function UserConfessions({ profileId }: Props) {
     const [loading, setLoading] = useState(true)
     const { walletAddress } = useCurrentWallet()
     const { profiles } = useGetProfiles({ walletAddress: walletAddress || '' })
+    const { playPressF } = useSfx()
 
     useEffect(() => {
         if (!profileId) return
@@ -93,6 +95,7 @@ export function UserConfessions({ profileId }: Props) {
 
             if (!res.ok) throw new Error('Failed to pay respects')
 
+            playPressF()
             toast.success('Respects paid. F.', { icon: '🕯️' })
 
             setConfessions(prev => prev.map(c =>
@@ -130,7 +133,7 @@ export function UserConfessions({ profileId }: Props) {
                         <Card className="p-5 bg-muted/80 backdrop-blur border-muted-light">
                             <div className="flex items-start justify-between mb-3">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 rounded-full bg-background flex items-center justify-center text-lg">
+                                    <div className="w-10 h-10 border-4 border-muted-light bg-background flex items-center justify-center text-xl shadow-[4px_4px_0_0_#18181b]">
                                         {confession.mood}
                                     </div>
                                     <div className="font-bold flex items-center gap-2 text-sm">
@@ -148,10 +151,10 @@ export function UserConfessions({ profileId }: Props) {
                                 <Button
                                     variant="ghost"
                                     onClick={() => handlePressF(confession.id)}
-                                    className="text-gray hover:text-success gap-2 h-8 px-2"
+                                    className="text-gray hover:text-success gap-2 h-8 px-2 group/btn transition-colors"
                                 >
-                                    <span className="font-bold">F</span>
-                                    <span className="bg-background px-2 py-0.5 rounded-full text-xs">{confession.likes}</span>
+                                    <span className="font-bold font-pixel text-xl group-hover/btn:scale-125 transition-transform duration-300">F</span>
+                                    <span className="bg-background border-2 border-muted-light px-2 py-0.5 rounded-none font-bold font-pixel text-xs shadow-none">{confession.likes}</span>
                                 </Button>
 
                                 <div className="text-xs text-gray">

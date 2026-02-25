@@ -10,7 +10,7 @@ export function Input({
   return (
     <input
       name={name}
-      className={`bg-transparent border-muted border-2 rounded-sm p-2 w-full ${className}`}
+      className={`bg-muted font-pixel text-xl border-4 border-muted-light focus:border-accent outline-none rounded-none p-3 w-full text-white transition-colors placeholder:text-zinc-600 ${className}`}
       {...props}
     />
   )

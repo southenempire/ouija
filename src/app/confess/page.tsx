@@ -8,10 +8,10 @@ export default function ConfessPage() {
             <div className="max-w-2xl w-full text-center mb-10 relative">
                 <div className="absolute left-1/2 -top-10 -translate-x-1/2 w-48 h-48 bg-error/10 rounded-full blur-[80px] -z-10" />
                 <h1 className="text-5xl md:text-6xl font-black bg-gradient-to-br from-white via-zinc-200 to-zinc-600 bg-clip-text text-transparent mb-4 tracking-tight">
-                    Unburden Your Bag
+                    Post a Confession
                 </h1>
                 <p className="text-zinc-400 text-lg font-medium">
-                    Tell us about the token that died, the money you lost, and the lesson you (probably didn&apos;t) learn.
+                    Share details about your dead token, how much you lost, and what happened.
                 </p>
             </div>
 

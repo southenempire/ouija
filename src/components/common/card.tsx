@@ -8,7 +8,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 export function Card({ children, className, ...props }: Props) {
   return (
-    <div className={classNames('bg-muted rounded-xl p-4', className)} {...props}>
+    <div className={classNames('bg-muted border-4 border-muted-light p-4 rounded-none shadow-[6px_6px_0_0_rgba(0,0,0,0.8)]', className)} {...props}>
       {children}
     </div>
   )
