@@ -1,37 +1,26 @@
 import { socialfi } from '@/utils/socialfi'
 
 export async function getConfessionsData() {
-    const debugState: any = {
-        hasKey: !!process.env.TAPESTRY_API_KEY,
-        nodeEnv: process.env.NODE_ENV,
-        tapestryUrl: process.env.TAPESTRY_URL || 'using-default',
-        profilesListSucceeded: false,
-        profilesCount: 0,
-        errorMsg: null
-    }
-
     // 1. Fetch all profiles in our namespace
     let profilesResponse: any = null
     try {
         profilesResponse = await socialfi.profiles.profilesList({
             apiKey: process.env.TAPESTRY_API_KEY || '',
         })
-        debugState.profilesListSucceeded = true
-        debugState.profilesCount = profilesResponse?.profiles?.length || 0
     } catch (error: any) {
-        debugState.errorMsg = error?.message || 'Unknown error'
         // Tapestry API throws a 404 if no profiles exist in the namespace
         if (error?.message?.includes('404') || error?.response?.status === 404) {
-            return { formatted: [], debugState }
+            return []
         }
-        return { formatted: [], debugState } // Short-circuit with debug info on error
+        return []
     }
 
     if (!profilesResponse || !profilesResponse.profiles) {
-        return { formatted: [], debugState }
+        return []
     }
 
-    const allProfiles = profilesResponse.profiles
+    // Handle nested payload structure from the Tapestry SDK
+    const allProfiles = profilesResponse.profiles.map((p: any) => p.profile || p)
 
     // 2. For each profile, fetch their comments (confessions)
     const confessionsPromises = allProfiles.map(async (profile: any) => {
@@ -42,10 +31,20 @@ export async function getConfessionsData() {
             })
 
             // Return comments attached with profile info
-            return (commentsResponse?.comments || []).map((comment: any) => ({
-                ...comment,
-                author: profile
-            }))
+            return (commentsResponse?.comments || []).map((comment: any) => {
+                // The newest API structure sometimes nests comment text under .comment.text
+                const textRaw = comment.comment?.text || comment.text || ''
+                const idRaw = comment.comment?.id || comment.id
+                const createdRaw = comment.comment?.created_at || comment.created_at || new Date().toISOString()
+                return {
+                    id: idRaw,
+                    text: textRaw,
+                    created_at: createdRaw,
+                    likes_count: comment.socialCounts?.likeCount || comment.likes_count || 0,
+                    tx_hash: comment.tx_hash,
+                    author: profile
+                }
+            })
         } catch (error: any) {
             if (error?.message?.includes('404') || error?.response?.status === 404) {
                 return []
@@ -104,5 +103,5 @@ export async function getConfessionsData() {
         })
         .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
-    return { formatted, debugState }
+    return formatted
 }
