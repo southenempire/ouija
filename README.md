@@ -1,75 +1,76 @@
 # 🪦 Ouija - The Solana Graveyard
 
-*A Tapestry Hackathon Submission*
+**Ouija** is a decentralized SocialFi platform built on the Solana blockchain. While traditional crypto social networks focus on flexing wins and memecoin moonshots, Ouija offers a different sanctuary: a place for the community to share, bond over, and lay to rest their worst trades, rugs, and liquidations.
 
-**Ouija** is a social graveyard for the Solana ecosystem. We all hear about the 100x gem hunters and the influencer calls that print money, but nobody talks about the bags they hold to zero. The rugs. The rekt trades. The lost seed phrases.
+Ouija provides a permanent, immutable record for your dead positions, allowing users to anonymously or publicly confess their greatest losses and receive support from fellow degens.
 
-Ouija is the final resting place for your dead positions. It's a place to anonymously (or publicly) confess your greatest losses, read the confessions of fellow degens, and "Press F" to pay your respects.
-
-### 🌐 Live Demo: [ouija-omega.vercel.app](https://ouija-omega.vercel.app)
+### 🌐 Live Application: [ouija-omega.vercel.app](https://ouija-omega.vercel.app)
 
 ---
 
-## 💀 Features
+## 💀 Platform Features
 
-- **Tombstone Confessions:** Post a permanent, immutable record of your worst crypto losses to the Graveyard feed.
-- **Pay Respects (F):** Found a story that hits too close to home? Press F to pay respects and bump their Tombstone's "Like" count.
-- **Viral 'Share to X' Intent:** Did someone just admit to losing 500 SOL on a sandwich sandwich token? Click the *Share* button to instantly generate a viral Twitter template linking back directly to their tragedy.
-- **Global Leaderboard:** Discover the "Top Sinners"—those with the highest accumulated F's from the community.
-- **The Social Graph:** Powered entirely by **Tapestry**, Ouija natively supports a fully integrated Web3 social graph. Click any username on the Feed to view their profile, see their lifetime stats, and hit **Follow**.
-- **Hover to Tip:** Hover over any abbreviated wallet address on a tombstone to reveal the "Tip this Chad" interaction. A single click copies their address for a quick sympathy tip.
-
----
-
-## 🕸️ Powered by Tapestry Protocol
-
-Ouija demonstrates how Tapestry can be utilized to completely bypass the "Cold Start" problem in Web3 social.
-
-Instead of building a massive, centralized custom database to handle Users, Authentication, Comments, Likes, and Follows, Ouija relies solely on Tapestry's protocol namespaces.
-
-- **Profiles:** User profiles are created and retrieved using `socialfi.profiles`.
-- **Confessions (Posts):** When a user confesses, it's submitted as a native Tapestry `comment` via `socialfi.comments`.
-- **F's (Likes):** Every time a user presses 'F', we interact directly with Tapestry's `likesCreate` endpoint targeting that specific comment `nodeId`.
-- **Following:** The entire Follow/Unfollow mechanism in the User Profile dashboard dynamically manipulates the Tapestry graph.
+- **Tombstone Confessions:** Post an immutable record of your cryptocurrency losses to the global Graveyard feed.
+- **Pay Respects (F):** Users can support each other by pressing 'F' to pay respects, directly influencing a confession's native engagement score.
+- **Social Integration & Viral Loops:** Seamlessly share confessions directly to X (Twitter) with pre-filled, dynamic templates detailing the specific token and loss amount using social intent URLs.
+- **Global Leaderboard:** Discover the "Top Sinners"—a ranked dashboard showcasing the users with the highest accumulated community respects.
+- **Web3 Social Graph:** Ouija features a fully integrated Web3 social graph. Click any username or profile to view their lifetime statistics, read their personalized epitaph, and Follow their ongoing journey.
+- **Direct Tipping Mechanics:** A native "Hover to Tip" feature on abbreviated wallet addresses enables frictionless peer-to-peer sympathy tips.
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+## 🕸️ Architecture & Infrastructure
 
-Ouija's frontend is built to evoke the feeling of a haunted, cursed 8-bit retro arcade game:
+Ouija leverages a modern, highly scalable Web3 technology stack to provide a frictionless user experience while abstracting away complex blockchain interactions.
 
-- **Framework:** Next.js (App Router) deployed on Vercel Edge.
-- **Web3 Auth:** Privy & Jupiter infrastructure for seamless, frictionless wallet connection.
-- **Social Backend:** Tapestry Protocol SDK (`socialfi.js`).
-- **Styling:** TailwindCSS with dynamic Framer Motion animations (fog effects, pulsing ghosts, and CRT scanlines).
-- **Sound Design:** Embedded HTML5 Audio contexts that play spooky, 8-bit chiptune coin drops when interacting with the graveyard.
-
----
-
-## 🛡️ Security & Auditing
-
-The Ouija codebase has been audited for standard web vulnerabilities prior to submission:
-- **Environment Variables:** All `TAPESTRY_API_KEY` executions are strict Server-Side Operations (inside Next.js `app/api/` routes). No private keys or secret variables are exposed to the `NEXT_PUBLIC` client bundle.
-- **No XSS Injection Vectors:** Uses standard React rendering protocols. We actively avoided `dangerouslySetInnerHTML`.
-- **Wallet Connection Safety:** Handled cleanly through Privy and validated against Tapestry profiles context.
+- **Frontend Application:** Next.js (App Router) deployed securely on Vercel Edge infrastructure.
+- **Authentication:** Wallet connection and ephemeral embedded wallets provided by **Privy**, ensuring a frictionless onboarding experience across devices.
+- **Social Graph Protocol:** The entire backend database and social interaction layer (Profiles, Comments, Likes, Follows) runs natively on the **Tapestry Protocol**. This decentralized unified namespace eliminates the "cold start" problem inherent to new social networks.
+- **Styling & UI/UX:** TailwindCSS combined with Framer Motion to create dynamic, highly interactive UI components (floating fog, interactive tooltips, and CRT visual aesthetics).
+- **RPC Infrastructure:** Real-time Solana network interactions powered by **Helius**.
 
 ---
 
-## 🚀 Local Development
+## 🚀 Getting Started locally
 
-First, grab your API Keys from Privy and Tapestry.
-Rename `.env.local.example` to `.env.local` and substitute the values.
+To run Ouija locally, you will need active API keys from Privy and Tapestry.
 
+### 1. Clone the repository
 ```bash
-# Clone the repository
 git clone https://github.com/southenempire/ouija.git
 cd ouija
+```
 
-# Install dependencies
+### 2. Configure Environment Variables
+Copy the example environment file and populate it with your specific API credentials:
+```bash
+cp .env.local.example .env.local
+```
+
+### 3. Install Dependencies
+```bash
 npm install
+```
 
-# Run the development server
+### 4. Run the Development Server
+```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to visit the Graveyard.
+Open [http://localhost:3000](http://localhost:3000) with your browser to visit the local instance of the application.
+
+---
+
+## 🛡️ Security
+
+The Ouija application utilizes strict Next.js App Router boundary protocols:
+- Server-side execution is enforced for sensitive credentials (`TAPESTRY_API_KEY`).
+- No private database keys are exposed to the `NEXT_PUBLIC` client bundle context.
+- Input rendering is sanitized to prevent XSS injection vectors within the community feed. 
+
+---
+
+## 🤝 Contributing & Support
+
+Contributions, issues, and feature requests are welcome!
+Feel free to check the [issues page](https://github.com/southenempire/ouija/issues) if you would like to contribute.
