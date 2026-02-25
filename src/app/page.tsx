@@ -6,9 +6,6 @@ import Link from 'next/link'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
-
 export default function Home() {
   const containerRef = useRef(null)
   const [stats, setStats] = useState({
