@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Card } from '@/components/common/card'
 import { Button } from '@/components/common/button'
 import { motion } from 'framer-motion'
-import { Skull, ExternalLink } from 'lucide-react'
+import { Skull, ExternalLink, Share2 } from 'lucide-react'
 import { abbreviateWalletAddress } from '@/components/common/tools'
 import { toast } from 'sonner'
 import { useCurrentWallet } from '@/components/auth/hooks/use-current-wallet'
@@ -139,17 +139,33 @@ export function Feed() {
                                 </div>
 
                                 <div className="flex items-center justify-between border-t border-white/5 pt-4 pl-14">
-                                    <Button
-                                        variant="ghost"
-                                        onClick={() => handlePressF(confession.id)}
-                                        className="text-zinc-400 hover:text-success hover:bg-success/10 gap-2 flex-grow sm:flex-grow-0 group/btn transition-colors"
-                                    >
-                                        <span className="font-black text-xl group-hover/btn:scale-125 transition-transform duration-300 shadow-none font-pixel">F</span>
-                                        <span className="bg-zinc-900 border-2 border-muted-light px-3 py-1 text-xs font-bold font-pixel flex items-center gap-1">
-                                            <Skull size={10} className={confession.likes > 0 ? "text-success" : "text-zinc-600"} />
-                                            {confession.likes}
-                                        </span>
-                                    </Button>
+                                    <div className="flex items-center gap-2 flex-wrap">
+                                        <Button
+                                            variant="ghost"
+                                            onClick={() => handlePressF(confession.id)}
+                                            className="text-zinc-400 hover:text-success hover:bg-success/10 gap-2 flex-grow sm:flex-grow-0 group/btn transition-colors"
+                                        >
+                                            <span className="font-black text-xl group-hover/btn:scale-125 transition-transform duration-300 shadow-none font-pixel">F</span>
+                                            <span className="bg-zinc-900 border-2 border-muted-light px-3 py-1 text-xs font-bold font-pixel flex items-center gap-1">
+                                                <Skull size={10} className={confession.likes > 0 ? "text-success" : "text-zinc-600"} />
+                                                {confession.likes}
+                                            </span>
+                                        </Button>
+
+                                        <Button
+                                            variant="ghost"
+                                            onClick={() => {
+                                                const text = `I just found this brutal crypto confession in the Solana Graveyard 🪦\n\n${confession.author?.username || 'Some poor soul'} lost ${confession.lossAmount} on ${confession.token} 😭\n\nPress F to pay respects: https://ouija-omega.vercel.app/graveyard\n\n@usetapestry @ouijadotfun #SolanaGraveyardHackathon`
+                                                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank')
+                                            }}
+                                            className="text-zinc-500 hover:text-[#1DA1F2] hover:bg-[#1DA1F2]/10 gap-2 transition-colors"
+                                        >
+                                            <div title="Share to X" className="flex items-center gap-2">
+                                                <Share2 size={16} />
+                                                <span className="text-xs font-bold uppercase tracking-wider hidden sm:inline">Share</span>
+                                            </div>
+                                        </Button>
+                                    </div>
 
                                     <div className="text-xs font-bold text-zinc-600 uppercase tracking-wider">
                                         {new Date(confession.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}

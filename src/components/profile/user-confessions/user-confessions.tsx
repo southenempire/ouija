@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Card } from '@/components/common/card'
 import { Button } from '@/components/common/button'
 import { motion } from 'framer-motion'
-import { Skull } from 'lucide-react'
+import { Skull, Share2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { useCurrentWallet } from '@/components/auth/hooks/use-current-wallet'
 import { useGetProfiles } from '@/components/auth/hooks/use-get-profiles'
@@ -148,14 +148,30 @@ export function UserConfessions({ profileId }: Props) {
                             </div>
 
                             <div className="flex items-center justify-between border-t border-muted-light pt-3">
-                                <Button
-                                    variant="ghost"
-                                    onClick={() => handlePressF(confession.id)}
-                                    className="text-gray hover:text-success gap-2 h-8 px-2 group/btn transition-colors"
-                                >
-                                    <span className="font-bold font-pixel text-xl group-hover/btn:scale-125 transition-transform duration-300">F</span>
-                                    <span className="bg-background border-2 border-muted-light px-2 py-0.5 rounded-none font-bold font-pixel text-xs shadow-none">{confession.likes}</span>
-                                </Button>
+                                <div className="flex items-center gap-2 flex-wrap">
+                                    <Button
+                                        variant="ghost"
+                                        onClick={() => handlePressF(confession.id)}
+                                        className="text-gray hover:text-success gap-2 h-8 px-2 group/btn transition-colors"
+                                    >
+                                        <span className="font-bold font-pixel text-xl group-hover/btn:scale-125 transition-transform duration-300">F</span>
+                                        <span className="bg-background border-2 border-muted-light px-2 py-0.5 rounded-none font-bold font-pixel text-xs shadow-none">{confession.likes}</span>
+                                    </Button>
+
+                                    <Button
+                                        variant="ghost"
+                                        onClick={() => {
+                                            const text = `I just found this brutal crypto confession in the Solana Graveyard 🪦\n\n${confession.author?.username || 'Some poor soul'} lost ${confession.lossAmount} on ${confession.token} 😭\n\nPress F to pay respects: https://ouija-omega.vercel.app/graveyard\n\n@usetapestry @ouijadotfun #SolanaGraveyardHackathon`
+                                            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank')
+                                        }}
+                                        className="text-gray hover:text-[#1DA1F2] hover:bg-[#1DA1F2]/10 gap-2 h-8 px-2 transition-colors"
+                                    >
+                                        <div title="Share to X" className="flex items-center gap-2">
+                                            <Share2 size={16} />
+                                            <span className="text-xs font-bold uppercase tracking-wider hidden sm:inline">Share</span>
+                                        </div>
+                                    </Button>
+                                </div>
 
                                 <div className="text-xs text-gray">
                                     {new Date(confession.createdAt).toLocaleDateString()}
