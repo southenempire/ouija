@@ -4,10 +4,54 @@ import { Skull, Ghost, Flame, TrendingDown } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function Home() {
   const containerRef = useRef(null)
+  const [stats, setStats] = useState({
+    confessions: '...',
+    totalLost: '...',
+    fsPressed: '...'
+  })
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await fetch(`/api/confessions?t=${new Date().getTime()}`, {
+          cache: 'no-store',
+          next: { revalidate: 0 }
+        })
+        const data = await res.json()
+        if (data.confessions) {
+          const confessions = data.confessions
+          let totalLostVal = 0
+          let totalFs = 0
+
+          confessions.forEach((c: any) => {
+            const parsed = parseFloat(c.lossAmount.replace(/[^0-9.]/g, ''))
+            if (!isNaN(parsed)) totalLostVal += parsed
+            if (c.likes) totalFs += c.likes
+          })
+
+          const formatCurrency = (val: number) => {
+            if (val === 0) return '$$$'
+            if (val >= 1000000) return `$${(val / 1000000).toFixed(1)}M`
+            if (val >= 1000) return `$${(val / 1000).toFixed(1)}K`
+            return `$${val.toLocaleString()}`
+          }
+
+          setStats({
+            confessions: confessions.length.toString(),
+            totalLost: formatCurrency(totalLostVal),
+            fsPressed: totalFs.toString()
+          })
+        }
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    fetchStats()
+  }, [])
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end center"]
@@ -105,9 +149,9 @@ export default function Home() {
         transition={{ duration: 1, delay: 0.8 }}
       >
         {[
-          { label: "Confessions", value: "NaN", icon: <Ghost className="w-5 h-5 text-zinc-500 mb-2" /> },
-          { label: "Total Lost", value: "$$$", icon: <TrendingDown className="w-5 h-5 text-accent mb-2" /> },
-          { label: "F's Pressed", value: "∞", icon: <Skull className="w-5 h-5 text-success mb-2" /> }
+          { label: "Confessions", value: stats.confessions, icon: <Ghost className="w-5 h-5 text-zinc-500 mb-2" /> },
+          { label: "Total Lost", value: stats.totalLost, icon: <TrendingDown className="w-5 h-5 text-accent mb-2" /> },
+          { label: "F's Pressed", value: stats.fsPressed, icon: <Skull className="w-5 h-5 text-success mb-2" /> }
         ].map((stat, i) => (
           <motion.div
             key={i}

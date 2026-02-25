@@ -19,8 +19,8 @@ export default function RootLayout({
   children: ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={`${vt323.className} bg-background text-foreground min-h-screen selection:bg-accent/30 selection:text-white antialiased text-xl overflow-x-hidden`}>
+    <html lang="en" className="overflow-x-hidden w-full">
+      <body className={`${vt323.className} bg-background text-foreground min-h-screen selection:bg-accent/30 selection:text-white antialiased text-xl overflow-x-hidden w-full relative`}>
         <PrivyClientProvider>
           <Header />
           <Toaster />

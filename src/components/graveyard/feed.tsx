@@ -20,7 +20,10 @@ export function Feed() {
 
     const fetchConfessions = async () => {
         try {
-            const res = await fetch('/api/confessions')
+            const res = await fetch(`/api/confessions?t=${new Date().getTime()}`, {
+                cache: 'no-store',
+                next: { revalidate: 0 }
+            })
             const data = await res.json()
             if (data.confessions) {
                 setConfessions(data.confessions)
