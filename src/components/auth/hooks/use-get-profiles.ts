@@ -61,7 +61,7 @@ export function useGetProfiles({
               // find our namespace profile
               if (idData?.identities) {
                 for (const identity of idData.identities) {
-                  const matchingProfile = identity.profiles?.find((p: any) => p.namespace?.name === 'ouija' || p.namespace?.name === 'tapestry-template')
+                  const matchingProfile = identity.profiles?.find((p: any) => p.namespace?.name === 'ouija' || p.namespace?.name === 'tapestry-template') || identity.profiles?.[0]
                   if (matchingProfile) {
                     setProfiles([matchingProfile])
                     localStorage.setItem(`tapestry_profile_${walletAddress}`, JSON.stringify(matchingProfile.profile))

@@ -12,13 +12,16 @@ export function PrivyClientProvider({
     <PrivyProvider
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID || ''}
       config={{
-        appearance: { walletChainType: 'solana-only' },
+        appearance: {
+          walletChainType: 'solana-only',
+          walletList: ['phantom', 'solflare', 'backpack'],
+        },
         externalWallets: {
           solana: { connectors: toSolanaWalletConnectors() },
         },
       }}
     >
-      {children}
+      <>{children}</>
     </PrivyProvider>
   )
 }

@@ -179,7 +179,7 @@ export function Header() {
                 onClick={() =>
                   login({
                     loginMethods: ['wallet'],
-                    walletChainType: 'ethereum-and-solana',
+                    walletChainType: 'solana-only',
                     disableSignup: false,
                   })
                 }
