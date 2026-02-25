@@ -82,7 +82,7 @@ export default function Home() {
       </div>
 
       {/* Hero Content */}
-      <main className="relative z-10 flex flex-col items-center flex-grow pt-20 px-4">
+      <main className="relative z-10 flex flex-col items-center pt-10 px-4 w-full justify-center">
         <motion.div
           className="relative mb-4"
           initial={{ opacity: 0, scale: 0.8, y: 20 }}
@@ -119,7 +119,7 @@ export default function Home() {
         </motion.h1>
 
         <motion.p
-          className="text-xl md:text-2xl text-zinc-400 font-medium max-w-2xl mb-12 leading-relaxed text-center drop-shadow-lg"
+          className="text-xl md:text-2xl text-zinc-400 font-medium max-w-2xl mb-8 leading-relaxed text-center drop-shadow-lg"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
@@ -152,7 +152,7 @@ export default function Home() {
 
       {/* Tombstone Stats Bar */}
       <motion.div
-        className="w-full relative z-20 mt-20 border-t-8 border-zinc-800 bg-zinc-950 pt-10 pb-20 shadow-[0_-20px_50px_rgba(0,0,0,0.8)] flex-grow"
+        className="w-full relative z-20 mt-12 border-t-8 border-zinc-800 bg-zinc-950 pt-10 pb-16 shadow-[0_-20px_50px_rgba(0,0,0,0.8)]"
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.8 }}
@@ -173,10 +173,10 @@ export default function Home() {
           ].map((stat, i) => (
             <div
               key={i}
-              className="flex flex-col items-center justify-end relative h-64 p-8 group"
+              className="flex flex-col items-center justify-end relative h-64 p-8 group cursor-pointer transition-all duration-300 hover:scale-105"
             >
               {/* Tombstone Shape Background */}
-              <div className="absolute bottom-0 w-full max-w-[240px] h-[110%] bg-zinc-900 rounded-t-[100px] border-4 border-b-0 border-zinc-800 shadow-[inset_0_10px_30px_rgba(0,0,0,0.8),0_10px_20px_rgba(0,0,0,0.9)] overflow-hidden transition-transform duration-500 group-hover:-translate-y-2">
+              <div className="absolute bottom-0 w-full max-w-[240px] h-[110%] bg-zinc-900 rounded-t-[100px] border-4 border-b-0 border-zinc-800 shadow-[inset_0_10px_30px_rgba(0,0,0,0.8),0_10px_20px_rgba(0,0,0,0.9)] overflow-hidden transition-all duration-300 group-hover:bg-zinc-800 group-hover:border-zinc-700 group-hover:-translate-y-4 group-hover:shadow-[0_0_40px_rgba(168,85,247,0.3)]">
                 <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-white/5 to-transparent rounded-t-[100px]" />
 
                 {/* Cracks / Texture for Tombstone */}
