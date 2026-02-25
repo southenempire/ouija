@@ -1,4 +1,7 @@
 import { NextResponse } from 'next/server'
+
+export const dynamic = 'force-dynamic'
+
 import { getConfessionsData } from '@/lib/confessions'
 
 export async function GET() {
@@ -24,10 +27,14 @@ export async function GET() {
             .sort((a, b) => parseAmount(b.lossAmount) - parseAmount(a.lossAmount))
             .slice(0, 5)
 
-        return NextResponse.json({
-            topLiked,
-            biggestLosses
-        })
+        return NextResponse.json(
+            { topLiked, biggestLosses },
+            {
+                headers: {
+                    'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=59'
+                }
+            }
+        )
     } catch (error: any) {
         console.error('Leaderboard error:', error)
         return NextResponse.json({ error: 'Failed to fetch leaderboard' }, { status: 500 })
