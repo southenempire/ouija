@@ -9,6 +9,7 @@ import { useGetProfiles } from '@/components/auth/hooks/use-get-profiles'
 import { Skull, AlertTriangle, Send } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { useSfx } from '@/hooks/use-sfx'
 
 export function ConfessionForm() {
     const { ready, authenticated, login } = usePrivy()
@@ -23,6 +24,7 @@ export function ConfessionForm() {
     const [story, setStory] = useState('')
     const [mood, setMood] = useState('😭')
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const { playConfess } = useSfx()
 
     // Derived state
     const hasProfile = profiles && profiles.length > 0
@@ -65,6 +67,7 @@ export function ConfessionForm() {
                 throw new Error('Failed to post confession')
             }
 
+            playConfess()
             toast.success('Your confession has been immortalized onchain.', {
                 icon: '🪦'
             })

@@ -37,22 +37,24 @@ export function UserConfessions({ profileId }: Props) {
                             token: 'Unknown Token',
                             story: c.text,
                             likes: c.likes_count || 0,
-                            createdAt: c.created_at,
+                            createdAt: c.created_at || new Date().toISOString(),
                             txHash: c.tx_hash
                         }
 
                         try {
-                            const parts = c.text.split(' | ')
-                            if (parts.length >= 3) {
-                                const mood = parts[0].trim()
-                                const lossStr = parts[1].trim()
-                                const lossMatch = lossStr.match(/Lost\s+(.+?)\s+on\s+(.+)/i)
+                            if (c.text?.includes(' | ')) {
+                                const parts = c.text.split(' | ')
+                                if (parts.length >= 3) {
+                                    const mood = parts[0].trim()
+                                    const lossStr = parts[1].trim()
+                                    const lossMatch = lossStr.match(/Lost\s+(.+?)\s+on\s+(.+)/i)
 
-                                if (lossMatch) {
-                                    parsed.mood = mood
-                                    parsed.lossAmount = lossMatch[1]
-                                    parsed.token = lossMatch[2]
-                                    parsed.story = parts.slice(2).join(' | ').trim()
+                                    if (lossMatch) {
+                                        parsed.mood = mood
+                                        parsed.lossAmount = lossMatch[1]
+                                        parsed.token = lossMatch[2]
+                                        parsed.story = parts.slice(2).join(' | ').trim()
+                                    }
                                 }
                             }
                         } catch {

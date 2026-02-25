@@ -48,7 +48,6 @@ export async function getConfessionsData() {
 
     // 3. Process and format the raw comments
     const formatted = flatConfessions
-        .filter(c => c.text?.includes(' | '))
         .map(c => {
             const parsed = {
                 id: c.id,
@@ -58,7 +57,7 @@ export async function getConfessionsData() {
                 token: 'Unknown Token',
                 story: c.text,
                 likes: c.likes_count || 0,
-                createdAt: c.created_at,
+                createdAt: c.created_at || new Date().toISOString(),
                 txHash: c.tx_hash,
                 authorUsername: c.author.username,
                 authorId: c.author.id,
@@ -67,17 +66,19 @@ export async function getConfessionsData() {
             }
 
             try {
-                const parts = c.text.split(' | ')
-                if (parts.length >= 3) {
-                    const mood = parts[0].trim()
-                    const lossStr = parts[1].trim()
-                    const lossMatch = lossStr.match(/Lost\s+(.+?)\s+on\s+(.+)/i)
+                if (c.text?.includes(' | ')) {
+                    const parts = c.text.split(' | ')
+                    if (parts.length >= 3) {
+                        const mood = parts[0].trim()
+                        const lossStr = parts[1].trim()
+                        const lossMatch = lossStr.match(/Lost\s+(.+?)\s+on\s+(.+)/i)
 
-                    if (lossMatch) {
-                        parsed.mood = mood
-                        parsed.lossAmount = lossMatch[1]
-                        parsed.token = lossMatch[2]
-                        parsed.story = parts.slice(2).join(' | ').trim()
+                        if (lossMatch) {
+                            parsed.mood = mood
+                            parsed.lossAmount = lossMatch[1]
+                            parsed.token = lossMatch[2]
+                            parsed.story = parts.slice(2).join(' | ').trim()
+                        }
                     }
                 }
             } catch {
