@@ -13,9 +13,6 @@ export const metadata: Metadata = {
   description: 'Confess your dead crypto bags onchain. Built on Tapestry.',
 }
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
-
 export default function RootLayout({
   children,
 }: Readonly<{
