@@ -115,7 +115,7 @@ export function Feed() {
                                             </div>
                                             <div className="text-sm text-zinc-500 flex items-center gap-1.5 mt-0.5">
                                                 <span className="w-4 h-4 rounded-full bg-accent/20 flex items-center justify-center text-[8px]">👤</span>
-                                                {confession.author.username} <span className="opacity-50">•</span> {abbreviateWalletAddress({ address: confession.author.wallet_address })}
+                                                {confession.author?.username || 'Unknown'} <span className="opacity-50">•</span> {abbreviateWalletAddress({ address: confession.author?.wallet_address || '0x00...0000' })}
                                             </div>
                                         </div>
                                     </div>

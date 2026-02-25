@@ -37,8 +37,8 @@ export function CommentItem({
             <User size={13} className="text-muted" />
           </div>
         )}
-        <Link href={`/${comment.author.username}`} className="hover:underline">
-          <p>{comment.author.username}</p>
+        <Link href={`/${comment.author?.username || 'unknown'}`} className="hover:underline">
+          <p>{comment.author?.username || 'Unknown'}</p>
         </Link>
       </div>
 

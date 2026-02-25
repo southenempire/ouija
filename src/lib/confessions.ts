@@ -74,10 +74,10 @@ export async function getConfessionsData() {
                 likes: c.likes_count || 0,
                 createdAt: c.created_at || new Date().toISOString(),
                 txHash: c.tx_hash,
-                authorUsername: c.author.username,
-                authorId: c.author.id,
-                authorAddress: c.author.wallet_address || c.author.username, // Using username as fallback
-                authorAvatar: c.author.image || null
+                authorUsername: c.author?.username || 'Unknown',
+                authorId: c.author?.id || 'unknown',
+                authorAddress: c.author?.wallet_address || c.author?.username || 'Unknown', // Using username as fallback
+                authorAvatar: c.author?.image || null
             }
 
             try {

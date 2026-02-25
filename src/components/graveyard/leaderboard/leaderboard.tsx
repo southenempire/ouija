@@ -61,7 +61,7 @@ export function Leaderboard() {
 
                         <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between">
-                                <span className="font-bold truncate text-sm">@{confession.author.username}</span>
+                                <span className="font-bold truncate text-sm">@{confession.author?.username || 'tombstone'}</span>
                                 <span className="flex items-center gap-1 text-xs font-bold text-success bg-success/10 px-2 py-0.5 rounded-full">
                                     <Flame size={12} /> {confession.likes} F&apos;s
                                 </span>
