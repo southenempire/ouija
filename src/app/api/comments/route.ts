@@ -18,15 +18,15 @@ export async function GET(req: NextRequest) {
     }
 
     return NextResponse.json(response)
-  } catch (error) {
-    console.error('[Get Comments Error]:', error)
-
-    if (error instanceof Error) {
-      return NextResponse.json({ error: error.message }, { status: 500 })
+  } catch (error: any) {
+    if (error?.message?.includes('404') || error?.response?.status === 404) {
+      return NextResponse.json({ comments: [] })
     }
 
+    console.error('[Get Comments Error]:', error)
+
     return NextResponse.json(
-      { error: 'An unexpected error occurred' },
+      { error: error?.message || 'An unexpected error occurred' },
       { status: 500 },
     )
   }
