@@ -119,7 +119,23 @@ export function Feed() {
                                                 <Link href={`/${confession.authorUsername || ''}`} className="hover:underline hover:text-accent transition-colors">
                                                     {confession.authorUsername || 'Unknown'}
                                                 </Link>
-                                                <span className="opacity-50">•</span> {abbreviateWalletAddress({ address: confession.authorAddress || '0x00...0000' })}
+                                                <span className="opacity-50">•</span>
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.preventDefault()
+                                                        const addr = confession.authorAddress
+                                                        if (addr && addr.length > 10) {
+                                                            navigator.clipboard.writeText(addr)
+                                                            toast.success('Address copied! Tip this Chad 💸', { icon: '💰' })
+                                                        }
+                                                    }}
+                                                    className="group relative hover:text-success transition-colors cursor-pointer"
+                                                >
+                                                    {abbreviateWalletAddress({ address: confession.authorAddress || '0x00...0000' })}
+                                                    <span className="absolute -top-7 left-1/2 -translate-x-1/2 bg-success/10 border border-success/30 text-success font-bold text-[10px] px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap backdrop-blur">
+                                                        Tip this Chad 💸
+                                                    </span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
