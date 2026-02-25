@@ -6,6 +6,9 @@ import Link from 'next/link'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default function Home() {
   const containerRef = useRef(null)
   const [stats, setStats] = useState({
@@ -159,10 +162,10 @@ export default function Home() {
       >
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-zinc-600 to-transparent opacity-30"></div>
         <div className="absolute top-0 right-10 -translate-y-[95%]">
-            {/* Background decorative tombstone silhouettes sitting on the wall */}
-            <div className="w-24 h-32 bg-zinc-800 rounded-t-full absolute right-40 bottom-0 opacity-50 z-0 border-t-4 border-l-4 border-zinc-700"></div>
-            <div className="w-16 h-20 bg-zinc-800 rounded-t-full absolute right-12 bottom-0 opacity-30 z-0 border-t-2 border-l-2 border-zinc-700"></div>
-            <div className="w-20 h-28 bg-zinc-800/80 rounded-t-sm absolute right-72 bottom-0 -rotate-12 opacity-40 z-0 border-t-4 border-zinc-700"></div>
+          {/* Background decorative tombstone silhouettes sitting on the wall */}
+          <div className="w-24 h-32 bg-zinc-800 rounded-t-full absolute right-40 bottom-0 opacity-50 z-0 border-t-4 border-l-4 border-zinc-700"></div>
+          <div className="w-16 h-20 bg-zinc-800 rounded-t-full absolute right-12 bottom-0 opacity-30 z-0 border-t-2 border-l-2 border-zinc-700"></div>
+          <div className="w-20 h-28 bg-zinc-800/80 rounded-t-sm absolute right-72 bottom-0 -rotate-12 opacity-40 z-0 border-t-4 border-zinc-700"></div>
         </div>
 
         <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
@@ -177,22 +180,22 @@ export default function Home() {
             >
               {/* Tombstone Shape Background */}
               <div className="absolute bottom-0 w-full max-w-[240px] h-[110%] bg-zinc-900 rounded-t-[100px] border-4 border-b-0 border-zinc-800 shadow-[inset_0_10px_30px_rgba(0,0,0,0.8),0_10px_20px_rgba(0,0,0,0.9)] overflow-hidden transition-transform duration-500 group-hover:-translate-y-2">
-                 <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-white/5 to-transparent rounded-t-[100px]" />
-                 
-                 {/* Cracks / Texture for Tombstone */}
-                 <div className="absolute top-1/4 left-1/4 w-12 h-0.5 bg-zinc-950 -rotate-12 opacity-50" />
-                 <div className="absolute top-1/3 right-1/4 w-16 h-0.5 bg-zinc-950 rotate-45 opacity-30" />
-                 <div className="absolute bottom-1/4 left-1/3 w-8 h-0.5 bg-zinc-950 rotate-12 opacity-40" />
+                <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-white/5 to-transparent rounded-t-[100px]" />
 
-                 <div className="h-full w-full flex flex-col items-center justify-start pt-12 pb-8 px-6 text-center z-10 relative">
-                    {stat.icon}
-                    <span className={`text-3xl md:text-5xl font-black mb-2 tracking-widest ${stat.color}`}>
-                      {stat.value}
-                    </span>
-                    <span className="text-zinc-500 font-bold tracking-widest text-xs md:text-sm uppercase opacity-80 border-t border-zinc-700 pt-2 w-3/4">
-                      {stat.label}
-                    </span>
-                 </div>
+                {/* Cracks / Texture for Tombstone */}
+                <div className="absolute top-1/4 left-1/4 w-12 h-0.5 bg-zinc-950 -rotate-12 opacity-50" />
+                <div className="absolute top-1/3 right-1/4 w-16 h-0.5 bg-zinc-950 rotate-45 opacity-30" />
+                <div className="absolute bottom-1/4 left-1/3 w-8 h-0.5 bg-zinc-950 rotate-12 opacity-40" />
+
+                <div className="h-full w-full flex flex-col items-center justify-start pt-12 pb-8 px-6 text-center z-10 relative">
+                  {stat.icon}
+                  <span className={`text-3xl md:text-5xl font-black mb-2 tracking-widest ${stat.color}`}>
+                    {stat.value}
+                  </span>
+                  <span className="text-zinc-500 font-bold tracking-widest text-xs md:text-sm uppercase opacity-80 border-t border-zinc-700 pt-2 w-3/4">
+                    {stat.label}
+                  </span>
+                </div>
               </div>
             </div>
           ))}
