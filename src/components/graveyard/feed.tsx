@@ -5,6 +5,7 @@ import { Card } from '@/components/common/card'
 import { Button } from '@/components/common/button'
 import { motion } from 'framer-motion'
 import { Skull, ExternalLink, Share2 } from 'lucide-react'
+import Link from 'next/link'
 import { abbreviateWalletAddress } from '@/components/common/tools'
 import { toast } from 'sonner'
 import { useCurrentWallet } from '@/components/auth/hooks/use-current-wallet'
@@ -115,7 +116,10 @@ export function Feed() {
                                             </div>
                                             <div className="text-sm text-zinc-500 flex items-center gap-1.5 mt-0.5">
                                                 <span className="w-4 h-4 rounded-full bg-accent/20 flex items-center justify-center text-[8px]">👤</span>
-                                                {confession.author?.username || 'Unknown'} <span className="opacity-50">•</span> {abbreviateWalletAddress({ address: confession.author?.wallet_address || '0x00...0000' })}
+                                                <Link href={`/${confession.author?.username || ''}`} className="hover:underline hover:text-accent transition-colors">
+                                                    {confession.author?.username || 'Unknown'}
+                                                </Link>
+                                                <span className="opacity-50">•</span> {abbreviateWalletAddress({ address: confession.author?.wallet_address || '0x00...0000' })}
                                             </div>
                                         </div>
                                     </div>
