@@ -22,7 +22,7 @@ importers:
         version: 3.3.4
       '@privy-io/react-auth':
         specifier: ^2.13.0
-        version: 2.25.0(x7jtksrbwqhzvfyr474nykbcja)
+        version: 2.25.0(22096ce69673d6954fd1a6a06aa895cf)
       '@radix-ui/react-alert-dialog':
         specifier: ^1.1.13
         version: 1.1.15(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -8306,7 +8306,7 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@privy-io/react-auth@2.25.0(x7jtksrbwqhzvfyr474nykbcja)':
+  '@privy-io/react-auth@2.25.0(22096ce69673d6954fd1a6a06aa895cf)':
     dependencies:
       '@base-org/account': 1.1.1(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.6.0(react@19.2.4))(utf-8-validate@5.0.10)(zod@3.25.76)
       '@coinbase/wallet-sdk': 4.3.2
