@@ -1,53 +1,75 @@
-# Solana Starter Kit
+# 🪦 Ouija - The Solana Graveyard
 
-Welcome to the **Solana Starter Kit**! This guide is designed to help you quickly start building blockchain applications on Solana by providing a comprehensive template and clear, step-by-step instructions.
+*A Tapestry Hackathon Submission*
 
-## User Journey
+**Ouija** is a social graveyard for the Solana ecosystem. We all hear about the 100x gem hunters and the influencer calls that print money, but nobody talks about the bags they hold to zero. The rugs. The rekt trades. The lost seed phrases.
 
-### 1. Clone the Repo
-Clone the repository in your preferred code editor to start working with the code locally. Use the following commands:
+Ouija is the final resting place for your dead positions. It's a place to anonymously (or publicly) confess your greatest losses, read the confessions of fellow degens, and "Press F" to pay your respects.
+
+### 🌐 Live Demo: [ouija-omega.vercel.app](https://ouija-omega.vercel.app)
+
+---
+
+## 💀 Features
+
+- **Tombstone Confessions:** Post a permanent, immutable record of your worst crypto losses to the Graveyard feed.
+- **Pay Respects (F):** Found a story that hits too close to home? Press F to pay respects and bump their Tombstone's "Like" count.
+- **Viral 'Share to X' Intent:** Did someone just admit to losing 500 SOL on a sandwich sandwich token? Click the *Share* button to instantly generate a viral Twitter template linking back directly to their tragedy.
+- **Global Leaderboard:** Discover the "Top Sinners"—those with the highest accumulated F's from the community.
+- **The Social Graph:** Powered entirely by **Tapestry**, Ouija natively supports a fully integrated Web3 social graph. Click any username on the Feed to view their profile, see their lifetime stats, and hit **Follow**.
+- **Hover to Tip:** Hover over any abbreviated wallet address on a tombstone to reveal the "Tip this Chad" interaction. A single click copies their address for a quick sympathy tip.
+
+---
+
+## 🕸️ Powered by Tapestry Protocol
+
+Ouija demonstrates how Tapestry can be utilized to completely bypass the "Cold Start" problem in Web3 social.
+
+Instead of building a massive, centralized custom database to handle Users, Authentication, Comments, Likes, and Follows, Ouija relies solely on Tapestry's protocol namespaces.
+
+- **Profiles:** User profiles are created and retrieved using `socialfi.profiles`.
+- **Confessions (Posts):** When a user confesses, it's submitted as a native Tapestry `comment` via `socialfi.comments`.
+- **F's (Likes):** Every time a user presses 'F', we interact directly with Tapestry's `likesCreate` endpoint targeting that specific comment `nodeId`.
+- **Following:** The entire Follow/Unfollow mechanism in the User Profile dashboard dynamically manipulates the Tapestry graph.
+
+---
+
+## 🛠️ Tech Stack & Architecture
+
+Ouija's frontend is built to evoke the feeling of a haunted, cursed 8-bit retro arcade game:
+
+- **Framework:** Next.js (App Router) deployed on Vercel Edge.
+- **Web3 Auth:** Privy & Jupiter infrastructure for seamless, frictionless wallet connection.
+- **Social Backend:** Tapestry Protocol SDK (`socialfi.js`).
+- **Styling:** TailwindCSS with dynamic Framer Motion animations (fog effects, pulsing ghosts, and CRT scanlines).
+- **Sound Design:** Embedded HTML5 Audio contexts that play spooky, 8-bit chiptune coin drops when interacting with the graveyard.
+
+---
+
+## 🛡️ Security & Auditing
+
+The Ouija codebase has been audited for standard web vulnerabilities prior to submission:
+- **Environment Variables:** All `TAPESTRY_API_KEY` executions are strict Server-Side Operations (inside Next.js `app/api/` routes). No private keys or secret variables are exposed to the `NEXT_PUBLIC` client bundle.
+- **No XSS Injection Vectors:** Uses standard React rendering protocols. We actively avoided `dangerouslySetInnerHTML`.
+- **Wallet Connection Safety:** Handled cleanly through Privy and validated against Tapestry profiles context.
+
+---
+
+## 🚀 Local Development
+
+First, grab your API Keys from Privy and Tapestry.
+Rename `.env.local.example` to `.env.local` and substitute the values.
 
 ```bash
-git https://github.com/Primitives-xyz/solana-starter-kit
-cd solana-starter-kit
-```
+# Clone the repository
+git clone https://github.com/southenempire/ouija.git
+cd ouija
 
-
-### 2. Get API Keys
-At this stage, you need to sign up for API keys from each infrastructure partner required for your project. Use the links below to sign up:
-- **Privy**: Web3 authentication and embedded wallet infrastructure – <a href="https://dashboard.privy.io" target="_blank">Sign up for Privy</a>
-- **Tapestry**: Social graph and onchain identity API – <a href="https://app.usetapestry.dev/" target="_blank">Get Early Access at Tapestry</a>
-- **Jupiter**: Open source liquidity and trading API – <a href="https://portal.jup.ag" target="_blank">Get your Jupiter API key</a>
-- **Helius**: Real-time Solana RPC platform - <a href="https://dashboard.helius.dev/" target="_blank">Sign up at Helius</a>
-
-
-### 3. Configure Environment
-Create a `.env` file at the project root and paste in your API credentials:
-
-#TODO
-
-### 4. Add Docs to Cursor
-Navigate to Cursor > Cursor Settings > Features > Docs
-
-Add the following docs URLs so Cursor can access them at any time:
-
-- **Privy**: https://docs.privy.io/
-
-- **Tapestry**: https://docs.usetapestry.dev/api
-
-- **Zerion**: https://developers.zerion.io/reference/intro/getting-started
-
-- **0x**: https://0x.org/docs/api
-
-- **Helius**: https://docs.helius.dev/
-
-
-### 5. Install Dependencies and Get Started
-Install dependencies and run the development server to begin coding:
-
-```bash
+# Install dependencies
 npm install
+
+# Run the development server
 npm run dev
 ```
 
-Now you're all set to start coding! Begin by exploring the codebase, and use our documentation to guide your development.
+Open [http://localhost:3000](http://localhost:3000) with your browser to visit the Graveyard.
