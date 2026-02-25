@@ -35,9 +35,29 @@ export function useGetProfiles({
         const data = await res.json()
 
         if (data.profiles && data.profiles.length > 0) {
-          setProfiles(data.profiles)
+          let profilesList = [...data.profiles]
+          const cachedStr = localStorage.getItem(`tapestry_profile_${walletAddress}`)
+
+          if (cachedStr) {
+            try {
+              const cached = JSON.parse(cachedStr)
+              const exists = profilesList.find((p: any) => p.profile.id === cached.id || p.profile.username === cached.username)
+
+              if (!exists) {
+                // Tapestry indexer is slow. Prepend our cached profile optimistically.
+                profilesList.unshift({ profile: cached, socialCounts: { followers: 0, following: 0 }, walletAddress: walletAddress as string } as any)
+              } else {
+                // Move it to the very front so the UI picks it up as profile[0]
+                profilesList = [exists, ...profilesList.filter(p => p !== exists)]
+              }
+            } catch (e) {
+              // Ignore cache errors
+            }
+          }
+
+          setProfiles(profilesList)
           // Refresh cache with the absolute latest real data
-          localStorage.setItem(`tapestry_profile_${walletAddress}`, JSON.stringify(data.profiles[0].profile))
+          localStorage.setItem(`tapestry_profile_${walletAddress}`, JSON.stringify(profilesList[0].profile))
         } else {
           // Tapestry indexer is extremely slow (can take minutes). If their profile is empty according to 
           // the API, but we know they just created one locally, we must optimistic-load the local one.
@@ -63,8 +83,9 @@ export function useGetProfiles({
                 for (const identity of idData.identities) {
                   const matchingProfile = identity.profiles?.find((p: any) => p.namespace?.name === 'ouija' || p.namespace?.name === 'tapestry-template') || identity.profiles?.[0]
                   if (matchingProfile) {
-                    setProfiles([matchingProfile])
-                    localStorage.setItem(`tapestry_profile_${walletAddress}`, JSON.stringify(matchingProfile.profile))
+                    const normalized = { profile: matchingProfile, socialCounts: { followers: 0, following: 0 }, walletAddress: walletAddress as string }
+                    setProfiles([normalized as any])
+                    localStorage.setItem(`tapestry_profile_${walletAddress}`, JSON.stringify(matchingProfile))
                     return // Return early since we found it globally
                   }
                 }

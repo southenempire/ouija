@@ -1,14 +1,28 @@
 'use client'
 
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 
 export function useSfx() {
-    const playPressF = useCallback(() => {
-        if (typeof window === 'undefined') return
-        try {
+    const audioCtxRef = useRef<AudioContext | null>(null)
+
+    const getCtx = () => {
+        if (typeof window === 'undefined') return null
+        if (!audioCtxRef.current) {
             const AudioContext = window.AudioContext || (window as any).webkitAudioContext
-            if (!AudioContext) return
-            const ctx = new AudioContext()
+            if (AudioContext) {
+                audioCtxRef.current = new AudioContext()
+            }
+        }
+        if (audioCtxRef.current?.state === 'suspended') {
+            audioCtxRef.current.resume()
+        }
+        return audioCtxRef.current
+    }
+
+    const playPressF = useCallback(() => {
+        try {
+            const ctx = getCtx()
+            if (!ctx) return
 
             // Spooky 8-bit low bell/coin sound
             const osc = ctx.createOscillator()
@@ -32,11 +46,9 @@ export function useSfx() {
     }, [])
 
     const playConfess = useCallback(() => {
-        if (typeof window === 'undefined') return
         try {
-            const AudioContext = window.AudioContext || (window as any).webkitAudioContext
-            if (!AudioContext) return
-            const ctx = new AudioContext()
+            const ctx = getCtx()
+            if (!ctx) return
 
             // Gruesome 8-bit thunder/impact sound
             const osc = ctx.createOscillator()
