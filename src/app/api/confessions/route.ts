@@ -6,9 +6,9 @@ import { getConfessionsData } from '@/lib/confessions'
 
 export async function GET() {
     try {
-        const confessions = await getConfessionsData()
+        const { formatted: confessions, debugState } = await getConfessionsData()
         return NextResponse.json(
-            { confessions },
+            { confessions, debugState },
             {
                 headers: {
                     // Cache for 10 seconds at the edge, serve stale while revalidating for another 59s

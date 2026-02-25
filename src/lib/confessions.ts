@@ -1,22 +1,34 @@
 import { socialfi } from '@/utils/socialfi'
 
 export async function getConfessionsData() {
+    const debugState: any = {
+        hasKey: !!process.env.TAPESTRY_API_KEY,
+        nodeEnv: process.env.NODE_ENV,
+        tapestryUrl: process.env.TAPESTRY_URL || 'using-default',
+        profilesListSucceeded: false,
+        profilesCount: 0,
+        errorMsg: null
+    }
+
     // 1. Fetch all profiles in our namespace
     let profilesResponse: any = null
     try {
         profilesResponse = await socialfi.profiles.profilesList({
             apiKey: process.env.TAPESTRY_API_KEY || '',
         })
+        debugState.profilesListSucceeded = true
+        debugState.profilesCount = profilesResponse?.profiles?.length || 0
     } catch (error: any) {
+        debugState.errorMsg = error?.message || 'Unknown error'
         // Tapestry API throws a 404 if no profiles exist in the namespace
         if (error?.message?.includes('404') || error?.response?.status === 404) {
-            return []
+            return { formatted: [], debugState }
         }
-        throw error // Rethrow unexpected errors
+        return { formatted: [], debugState } // Short-circuit with debug info on error
     }
 
     if (!profilesResponse || !profilesResponse.profiles) {
-        return []
+        return { formatted: [], debugState }
     }
 
     const allProfiles = profilesResponse.profiles
@@ -92,5 +104,5 @@ export async function getConfessionsData() {
         })
         .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
-    return formatted
+    return { formatted, debugState }
 }
