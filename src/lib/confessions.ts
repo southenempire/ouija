@@ -85,13 +85,16 @@ export async function getConfessionsData() {
                     const parts = c.text.split(' | ')
                     if (parts.length >= 3) {
                         const mood = parts[0].trim()
-                        const lossStr = parts[1].trim()
-                        const lossMatch = lossStr.match(/Lost\s+(.+?)\s+on\s+(.+)/i)
+                        const summaryStr = parts[1].trim()
+                        const match = summaryStr.match(/(?:Lost|Almost aped|Sold|Traded)\s+(.+?)\s+(?:on|into|for)\s+(.+)/i)
 
-                        if (lossMatch) {
+                        if (match) {
                             parsed.mood = mood
-                            parsed.lossAmount = lossMatch[1]
-                            parsed.token = lossMatch[2]
+                            parsed.lossAmount = match[1]
+                            parsed.token = match[2]
+                            parsed.story = parts.slice(2).join(' | ').trim()
+                        } else {
+                            parsed.mood = mood
                             parsed.story = parts.slice(2).join(' | ').trim()
                         }
                     }

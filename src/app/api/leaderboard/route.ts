@@ -27,8 +27,22 @@ export async function GET() {
             .sort((a, b) => parseAmount(b.lossAmount) - parseAmount(a.lossAmount))
             .slice(0, 5)
 
+        // 3. Most Haunted Tickers (Token Risk Signal)
+        const tokenCounts: Record<string, number> = {}
+        allConfessions.forEach(c => {
+            if (c.token && c.token !== 'Unknown Token') {
+                const normalized = c.token.toUpperCase().trim()
+                tokenCounts[normalized] = (tokenCounts[normalized] || 0) + 1
+            }
+        })
+
+        const mostHauntedTokens = Object.entries(tokenCounts)
+            .map(([token, count]) => ({ token, count }))
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 5)
+
         return NextResponse.json(
-            { topLiked, biggestLosses },
+            { topLiked, biggestLosses, mostHauntedTokens },
             {
                 headers: {
                     'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=59'

@@ -19,6 +19,7 @@ export function ConfessionForm() {
     })
     const router = useRouter()
 
+    const [category, setCategory] = useState<'loss' | 'near_miss' | 'sold_early' | 'trade_regret'>('loss')
     const [token, setToken] = useState('')
     const [lossAmount, setLossAmount] = useState('')
     const [story, setStory] = useState('')
@@ -48,8 +49,12 @@ export function ConfessionForm() {
         setIsSubmitting(true)
 
         try {
-            // Format: [MOOD] I lost [AMOUNT] on [TOKEN]. [STORY]
-            const confessionText = `${mood} | Lost ${lossAmount} on ${token} | ${story}`
+            let summary = `Lost ${lossAmount} on ${token}`
+            if (category === 'near_miss') summary = `Almost aped ${lossAmount} into ${token}`
+            if (category === 'sold_early') summary = `Sold ${token} for ${lossAmount} before moonshot`
+            if (category === 'trade_regret') summary = `Traded ${token} for ${lossAmount} before crash`
+
+            const confessionText = `${mood} | ${summary} | ${story}`
 
             const response = await fetch('/api/comments', {
                 method: 'POST',
@@ -126,19 +131,47 @@ export function ConfessionForm() {
     } else {
         content = (
             <form onSubmit={handleSubmit} className="space-y-6 text-left">
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-300">Confession Category</label>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        {[
+                            { id: 'loss', label: '🪦 Rug / Loss', emoji: '🪦' },
+                            { id: 'near_miss', label: '😮‍💨 Near Miss', emoji: '😮‍💨' },
+                            { id: 'sold_early', label: '🤦 Sold Early', emoji: '🤦' },
+                            { id: 'trade_regret', label: '📉 Bad Trade', emoji: '📉' },
+                        ].map((cat) => (
+                            <button
+                                key={cat.id}
+                                type="button"
+                                onClick={() => setCategory(cat.id as any)}
+                                className={`py-2 px-3 rounded-xl text-xs font-bold border transition-all text-center ${category === cat.id
+                                        ? 'bg-accent/20 text-accent border-accent shadow-md shadow-accent/10 font-bold'
+                                        : 'bg-background border-white/5 text-zinc-400 hover:border-white/20'
+                                    }`}
+                            >
+                                {cat.label}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
                 <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-300">Dead Token Ticker</label>
+                        <label className="text-sm font-medium text-gray-300">
+                            {category === 'near_miss' ? 'Target Token' : category === 'sold_early' ? 'Sold Token' : 'Token Ticker'}
+                        </label>
                         <Input
                             required
-                            placeholder="e.g. LUNA, FTT, SAFE..."
+                            placeholder="e.g. LUNA, FTT, SOL..."
                             value={token}
                             onChange={(e) => setToken(e.target.value)}
                             className="bg-background border-muted hover:border-accent focus:border-accent"
                         />
                     </div>
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-300">Amount Lost</label>
+                        <label className="text-sm font-medium text-gray-300">
+                            {category === 'near_miss' ? 'Amount Saved' : category === 'sold_early' ? 'Fumbled Amount' : 'Amount / Value'}
+                        </label>
                         <Input
                             required
                             placeholder="e.g. $50,000 or 100 SOL"

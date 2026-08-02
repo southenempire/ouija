@@ -4,17 +4,19 @@ import { useEffect, useState } from 'react'
 import { Card } from '@/components/common/card'
 import { Button } from '@/components/common/button'
 import { motion } from 'framer-motion'
-import { Skull, ExternalLink, Share2 } from 'lucide-react'
+import { Skull, ExternalLink, Share2, Coins } from 'lucide-react'
 import Link from 'next/link'
 import { abbreviateWalletAddress } from '@/components/common/tools'
 import { toast } from 'sonner'
 import { useCurrentWallet } from '@/components/auth/hooks/use-current-wallet'
 import { useGetProfiles } from '@/components/auth/hooks/use-get-profiles'
 import { useSfx } from '@/hooks/use-sfx'
+import { TipModal } from '@/components/graveyard/tip-modal'
 
 export function Feed() {
     const [confessions, setConfessions] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
+    const [tipTarget, setTipTarget] = useState<{ authorUsername: string; authorAddress: string; confessionId: string } | null>(null)
     const { walletAddress } = useCurrentWallet()
     const { profiles } = useGetProfiles({ walletAddress: walletAddress || '' })
     const { playPressF } = useSfx()
@@ -171,6 +173,18 @@ export function Feed() {
                                                 {confession.likes}
                                             </span>
                                         </Button>
+                                        <Button
+                                            variant="ghost"
+                                            onClick={() => setTipTarget({
+                                                authorUsername: confession.authorUsername || 'Tombstone',
+                                                authorAddress: confession.authorAddress || '',
+                                                confessionId: confession.id
+                                            })}
+                                            className="text-zinc-400 hover:text-accent hover:bg-accent/10 gap-2 transition-colors"
+                                        >
+                                            <Coins size={16} />
+                                            <span className="text-xs font-bold uppercase tracking-wider hidden sm:inline">Tip SOL</span>
+                                        </Button>
 
                                         <Button
                                             variant="ghost"
@@ -202,6 +216,16 @@ export function Feed() {
     return (
         <div className="w-full">
             {content}
+
+            {tipTarget && (
+                <TipModal
+                    isOpen={!!tipTarget}
+                    onClose={() => setTipTarget(null)}
+                    authorUsername={tipTarget.authorUsername}
+                    authorAddress={tipTarget.authorAddress}
+                    confessionId={tipTarget.confessionId}
+                />
+            )}
         </div>
     )
 }
